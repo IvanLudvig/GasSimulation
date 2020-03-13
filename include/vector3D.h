@@ -1,0 +1,10 @@
+#ifndef GASSIMULATION_VECTOR3D_H
+#define GASSIMULATION_VECTOR3D_H
+
+
+class vector3D {
+
+};
+
+
+#endif //GASSIMULATION_VECTOR3D_H
