@@ -151,13 +151,13 @@ public:
 
 vector3D operator*(const double& b, vector3D& a)
 {
-    vector3D result = {a.get_x() * b, a.get_y() * b, a.get_z() * b};
+    vector3D result = {a.getX() * b, a.getY() * b, a.getZ() * b};
     return result;
 }
 
 std::ostream& operator<<(std::ostream& out, vector3D a)
 {
-    out << "("<<a.get_x()<<", "<<a.get_y()<<", "<<a.get_z()<<")";
+    out << "("<<a.getX()<<", "<<a.getY()<<", "<<a.getZ()<<")";
     return out;
 }
 //use () to display vector product of a, b

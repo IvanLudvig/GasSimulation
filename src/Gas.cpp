@@ -5,9 +5,8 @@ Gas::Gas(int N, double molarMass, vector3D tank) {
     this->tank = tank;
     this->molarMass = molarMass;
     this->V = tank.getX() * tank.getY() * tank.getZ();
-    particles = std::vector<Particle>(N);
-    for (auto &particle : particles) {
-        particle = Particle(molarMass / Na, 0);
+    for (int i = 0; i < N; i++) {
+        particles.push_back(Particle(molarMass / Na, 0));
     }
 }
 

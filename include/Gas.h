@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "Particle.h"
-#include "vector3D.h"
 
 class Gas {
 private:
