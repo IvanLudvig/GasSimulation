@@ -1,11 +1,11 @@
 #ifndef GASSIMULATION_VECTOR3D_H
 #define GASSIMULATION_VECTOR3D_H
-
 #include <iostream>
 #include <cmath>
 
 class vector3D
 {
+    
 private:
     double x;
     double y;
@@ -26,7 +26,7 @@ public:
         this->z = z;
     }
 
-    void setX(double x)
+    void setX (double x)
     {
         this->x = x;
     }
@@ -162,6 +162,7 @@ std::ostream& operator<<(std::ostream& out, vector3D a)
 }
 //use () to display vector product of a, b
 //example: cout << (a^b);
+
 
 
 
