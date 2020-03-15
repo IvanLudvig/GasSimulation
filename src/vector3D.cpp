@@ -1,23 +1,13 @@
 #include "../include/vector3D.h"
-#include <iostream>
-#include <cmath>
 
-class vector3D
-{
-private:
-    double x;
-    double y;
-    double z;
-
-public:
-    vector3D()
+    vector3D::vector3D()
     {
         x = 0;
         y = 0;
         z = 0;
     }
 
-    vector3D(double x, double y, double z)
+    vector3D::vector3D(double x, double y, double z)
     {
         this->x = x;
         this->y = y;
