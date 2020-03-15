@@ -26,32 +26,32 @@ public:
         this->z = z;
     }
 
-    void set_x(double x)
+    void setX(double x)
     {
         this->x = x;
     }
 
-    void set_y(double y)
+    void setY(double y)
     {
         this->y = y;
     }
 
-    void set_z(double z)
+    void setZ(double z)
     {
         this->z = z;
     }
 
-    double get_x()
+    double getX()
     {
         return x;
     }
 
-    double get_y()
+    double getY()
     {
         return y;
     }
 
-    double get_z()
+    double getZ()
     {
         return z;
     }

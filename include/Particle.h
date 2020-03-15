@@ -6,17 +6,17 @@
 class Particle {
 
 private:
-    double mass;
+    double mass, radius;
 
     vector3D pos;
     vector3D speed;
     vector3D acceleration;
 
 public:
-    Particle(double mass);
-    Particle(double mass, vector3D pos);
-    Particle(double mass, vector3D pos, vector3D speed);
-    Particle(double mass, vector3D pos, vector3D speed, vector3D acceleration);
+    Particle(double mass, double radius);
+    Particle(double mass, double radius, vector3D pos);
+    Particle(double mass, double radius, vector3D pos, vector3D speed);
+    Particle(double mass, double radius, vector3D pos, vector3D speed, vector3D acceleration);
 
     void setMass(double mass);
     void setPos(vector3D pos);
@@ -29,6 +29,9 @@ public:
     vector3D getAcceleration();
 
     void update(vector3D force, double delta);
+    void collideWithWalls(vector3D tank);
+    void collideWithParticle(Particle p);
+    bool isNear(Particle p);
 };
 
 
