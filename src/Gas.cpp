@@ -1,10 +1,12 @@
 #include "Gas.h"
 
-Gas::Gas(int N, double molarMass, vector3D tank)
+Gas::Gas(int N, double molarMass, vector3D tank, double e, double b)
 {
     this->N = N;
     this->tank = tank;
     this->molarMass = molarMass;
+    this->e = e;
+    this->b = b;
     this->V = tank.getX() * tank.getY() * tank.getZ();
     std::mt19937 gen;
     std::uniform_real_distribution<double> dis{0, 1};
@@ -40,6 +42,14 @@ Gas::Gas(std::vector<Particle> particles, vector3D tank)
 int Gas::getN()
 {
     return N;
+}
+
+double Gas::getE() {
+    return e;
+}
+
+double Gas::getB() {
+    return b;
 }
 
 double Gas::getTemperature()
@@ -81,7 +91,9 @@ void Gas::collide()
         {
             if (p1->isNear(*p2))
             {
-                //TODO collision between particles
+                double U = 4 * getE()/(p1->particleSpacing(*p2)) * (pow((getB()/p1->particleSpacing(*p2)), 12) - pow((getB()/p1->particleSpacing(*p2)), 6));
+                vector3D n = p2->getPos()- p1->getPos()/p1->particleSpacing(*p2);
+                p1->setForce(p1->getForce() + (-1) * (U) * (n));
             }
         }
     }

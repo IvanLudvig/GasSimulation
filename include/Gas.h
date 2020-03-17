@@ -10,6 +10,7 @@ private:
     std::vector<Particle> particles;
     Octree tree;
     int N;  //number of particles
+    double e, b;  //for determination of potential
     double P, V, T;
     double molarMass;
     vector3D tank;  //gas tank: box with vector components as its sides
@@ -17,10 +18,12 @@ private:
 public:
     const double R = 8.31;  //Gas constant
     const double Na = 6.02214e23;   //Avogadro constant
-    Gas(int N, double molarMass, vector3D tank);
+    Gas(int N, double molarMass, vector3D tank, double e, double b);
     Gas(std::vector<Particle> particles, vector3D tank);
 
     int getN();
+    double  getE();
+    double getB();
 
     //Particle parameters update, collision with walls and gas parameters update
     void update(double delta);
