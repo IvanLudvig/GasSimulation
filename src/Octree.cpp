@@ -7,11 +7,10 @@ Octree::Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth)
     this->nearTopRight = nearTopRight;
     middle = 0.5 * farBottomLeft + 0.5 * nearTopRight;
     level = maxDepth;
-    for (int i = 0; i < 8; i++)
-    {
-        children[i] = NULL;
-    }
 }
+
+Octree::Octree()
+{}
 
 void Octree::add(Particle p)
 {
@@ -78,9 +77,9 @@ std::ostream &Octree::print(std::ostream &os, const std::string &indent) const
 
 bool Octree::isLeaf() const
 {
-    for(int i = 0; i<8; i++)
+    for (int i = 0; i < 8; i++)
     {
-        if(children[i]!=NULL)
+        if (children[i] != NULL)
         {
             return false;
         }
@@ -89,6 +88,8 @@ bool Octree::isLeaf() const
     return true;
 }
 
-Octree::Octree()
-{}
 
+Octree::~Octree()
+{
+    delete *children;
+}

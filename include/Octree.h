@@ -28,7 +28,7 @@ public:
     Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth);
 
     Octree();
-
+    ~Octree();
 
     void add(Particle p);
     std::ostream& print(std::ostream&, const std::string& indent) const;
