@@ -14,7 +14,7 @@ vector3D::vector3D(double x, double y, double z)
     this->z = z;
 }
 
-void vector3D::setX (double x)
+void vector3D::setX(double x)
 {
     this->x = x;
 }
@@ -44,61 +44,61 @@ double vector3D::getZ()
     return z;
 }
 
-vector3D vector3D::operator+(const vector3D& b)
+vector3D vector3D::operator+(const vector3D &b)
 {
     vector3D result = {x + b.x, y + b.y, z + b.z};
     return result;
 }
 
-vector3D vector3D::operator-(const vector3D& b)
+vector3D vector3D::operator-(const vector3D &b)
 {
     vector3D result = {x - b.x, y - b.y, z - b.z};
     return result;
 }
 
-vector3D vector3D::operator*(const double& b)
+vector3D vector3D::operator*(const double &b)
 {
     vector3D result = {x * b, y * b, z * b};
     return result;
 }
 
-vector3D vector3D::operator/(const double& b)
+vector3D vector3D::operator/(const double &b)
 {
     vector3D result = {x / b, y / b, z / b};
     return result;
 }
 
 //scalar multiplication: *
-double vector3D::operator*(const vector3D& b)
+double vector3D::operator*(const vector3D &b)
 {
     double result = x * b.x + y * b.y + z * b.z;
     return result;
 }
 
 //vector multiplication: ^
-vector3D vector3D::operator^(const vector3D& b)
+vector3D vector3D::operator^(const vector3D &b)
 {
     vector3D result = {y * b.z - b.y * z, z * b.x - b.z * x, x * b.y - y * b.x};
     return result;
 }
 
-bool vector3D::operator==(const vector3D& b)
+bool vector3D::operator==(const vector3D &b)
 {
-    if(x == b.x && y == b.y && z == b.z)
+    if (x == b.x && y == b.y && z == b.z)
         return true;
     else
         return false;
 }
 
-bool vector3D::operator!=(const vector3D& b)
+bool vector3D::operator!=(const vector3D &b)
 {
-    if(x == b.x && y == b.y && z == b.z)
+    if (x == b.x && y == b.y && z == b.z)
         return false;
     else
         return true;
 }
 
-vector3D vector3D::operator+= (const vector3D &b)
+vector3D vector3D::operator+=(const vector3D &b)
 {
     x += b.x;
     y += b.y;
@@ -106,7 +106,7 @@ vector3D vector3D::operator+= (const vector3D &b)
     return *this;
 }
 
-vector3D vector3D::operator-= (const vector3D &b)
+vector3D vector3D::operator-=(const vector3D &b)
 {
     x -= b.x;
     y -= b.y;
@@ -114,7 +114,7 @@ vector3D vector3D::operator-= (const vector3D &b)
     return *this;
 }
 
-vector3D vector3D::operator*= (const double &b)
+vector3D vector3D::operator*=(const double &b)
 {
     x *= b;
     y *= b;
@@ -122,7 +122,7 @@ vector3D vector3D::operator*= (const double &b)
     return *this;
 }
 
-vector3D vector3D::operator/= (const double &b)
+vector3D vector3D::operator/=(const double &b)
 {
     x /= b;
     y /= b;
@@ -136,15 +136,15 @@ double vector3D::length()
     return sqrt(x * x + y * y + z * z);
 }
 
-vector3D operator*(const double& b, vector3D& a)
+vector3D operator*(const double &b, vector3D &a)
 {
     vector3D result = {a.getX() * b, a.getY() * b, a.getZ() * b};
     return result;
 }
 
-std::ostream& operator<<(std::ostream& out, vector3D a)
+std::ostream &operator<<(std::ostream &out, vector3D a)
 {
-    out << "("<<a.getX()<<", "<<a.getY()<<", "<<a.getZ()<<")";
+    out << "(" << a.getX() << ", " << a.getY() << ", " << a.getZ() << ")";
     return out;
 }
 //use () to display vector product of a, b

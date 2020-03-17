@@ -1,35 +1,62 @@
 #include "Gas.h"
 
-Gas::Gas(int N, double molarMass, vector3D tank) {
+Gas::Gas(int N, double molarMass, vector3D tank)
+{
     this->N = N;
     this->tank = tank;
     this->molarMass = molarMass;
     this->V = tank.getX() * tank.getY() * tank.getZ();
-    for (int i = 0; i < N; i++) {
-        particles.push_back(Particle(molarMass / Na, 0));
+    std::mt19937 gen;
+    std::uniform_real_distribution<double> dis{0, 1};
+    for (int i = 0; i < N; i++)
+    {
+        particles.push_back(Particle(molarMass / Na, 0,
+                                     vector3D(dis(gen) * tank.getX(),
+                                              dis(gen) * tank.getY(),
+                                              dis(gen) * tank.getZ()),
+                                     (vector3D(dis(gen), dis(gen), dis(gen)))));
     }
+    this->tree = Octree(vector3D(0, 0, 0), tank, 10);
+    for (int i = 0; i < N; i++)
+    {
+        tree.add(particles.at(i));
+    }
+    std::cout<<tree<<std::endl;
 }
 
-Gas::Gas(int N, std::vector<Particle> particles, vector3D tank) {
-    this->N = N;
+Gas::Gas(std::vector<Particle> particles, vector3D tank)
+{
+    this->N = particles.size();
     this->particles = particles;
+
+    this->tree = Octree(vector3D(0, 0, 0), tank, 10);
+    for (int i = 0; i < N; i++)
+    {
+        tree.add(particles.at(i));
+    }
+    std::cout<<tree<<std::endl;
 }
 
-int Gas::getN() {
+int Gas::getN()
+{
     return N;
 }
 
-double Gas::getTemperature() {
+double Gas::getTemperature()
+{
     return T;
 }
 
-double Gas::getPressure() {
+double Gas::getPressure()
+{
     return 0;
 }
 
-void Gas::update(double delta) {
+void Gas::update(double delta)
+{
     //Particle collisions
-    for (auto &particle : particles) {
+    for (auto &particle : particles)
+    {
         particle.update(vector3D(0, 0, 0), delta);
         particle.collideWithWalls(tank);
     }
@@ -37,7 +64,8 @@ void Gas::update(double delta) {
 
     //Computing gas parameters
     double rmsSpeed = 0;  //squared root-mean-square speed
-    for (auto &particle : particles) {
+    for (auto &particle : particles)
+    {
         rmsSpeed += particle.getSpeed().length() * particle.getSpeed().length();
     }
     rmsSpeed /= N;
@@ -45,10 +73,14 @@ void Gas::update(double delta) {
     P = (N * R * T) / (Na * V);
 }
 
-void Gas::collide() {
-    for (auto p1 = particles.begin(); p1 < particles.end() - 1; p1++) {
-        for (auto p2 = p1 + 1; p2 < particles.end(); p2++) {
-            if (p1->isNear(*p2)) {
+void Gas::collide()
+{
+    for (auto p1 = particles.begin(); p1 < particles.end() - 1; p1++)
+    {
+        for (auto p2 = p1 + 1; p2 < particles.end(); p2++)
+        {
+            if (p1->isNear(*p2))
+            {
                 //TODO collision between particles
             }
         }

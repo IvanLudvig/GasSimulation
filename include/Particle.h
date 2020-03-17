@@ -3,7 +3,8 @@
 
 #include "vector3D.h"
 
-class Particle {
+class Particle
+{
 
 private:
     double mass, radius;
