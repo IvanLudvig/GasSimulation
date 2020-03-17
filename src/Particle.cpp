@@ -63,7 +63,8 @@ void Particle::setAcceleration(vector3D acceleration)
     this->acceleration = acceleration;
 }
 
-void Particle::setForce(vector3D force) {
+void Particle::setForce(vector3D force)
+{
     this->force = force;
 }
 
@@ -88,7 +89,8 @@ vector3D Particle::getAcceleration()
     return acceleration;
 }
 
-vector3D Particle::getForce() {
+vector3D Particle::getForce()
+{
     return force;
 }
 
@@ -146,7 +148,8 @@ void Particle::collideWithWalls(vector3D tank)
     }
 }
 
-double Particle::particleSpacing(Particle p) {
+double Particle::particleSpacing(Particle p)
+{
     return (getPos() - p.getPos()).length();
 }
 
