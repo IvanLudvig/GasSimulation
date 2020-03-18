@@ -17,6 +17,10 @@ void Particle::setMass(double mass)
     this->mass = mass;
 }
 
+void Particle::setU(double U) {
+    this->U = U;
+}
+
 void Particle::setPos(vector3D pos)
 {
     this->pos = pos;
@@ -41,6 +45,10 @@ void Particle::setForce(vector3D force)
 double Particle::getMass()
 {
     return mass;
+}
+
+double Particle::getU() {
+    return U;
 }
 
 vector3D Particle::getPos()

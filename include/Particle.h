@@ -8,6 +8,7 @@ class Particle
 
 private:
     double mass, radius;
+    double U;
 
     vector3D pos;
     vector3D speed;
@@ -20,6 +21,8 @@ public:
 
     void setMass(double mass);
 
+    void setU(double U);
+
     void setPos(vector3D pos);
 
     void setSpeed(vector3D speed);
@@ -29,6 +32,8 @@ public:
     void setForce(vector3D force);
 
     double getMass();
+
+    double getU();
 
     vector3D getPos();
 

@@ -88,10 +88,10 @@ void Gas::collide()
         {
             if (p1->isNear(*p2))
             {
-                double U = 4 * getE() / (p1->particleSpacing(*p2)) *
-                           (pow((getB() / p1->particleSpacing(*p2)), 12) - pow((getB() / p1->particleSpacing(*p2)), 6));
-                vector3D n = p2->getPos() - p1->getPos() / p1->particleSpacing(*p2);
-                p1->setForce(p1->getForce() + (-1) * (U) * (n));
+                p1->setU(p1->getU() + 4 * getE() *
+                         (pow((getB() / p1->particleSpacing(*p2)), 12) - pow((getB() / p1->particleSpacing(*p2)), 6)));
+                vector3D n = (p2->getPos() - p1->getPos() )/ p1->particleSpacing(*p2);
+                p1->setForce(p1->getForce() + (-1) * (p1->getU()) * (n)/(p1->particleSpacing(*p2)));
             }
         }
     }
