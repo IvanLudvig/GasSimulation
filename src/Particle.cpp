@@ -17,7 +17,8 @@ void Particle::setMass(double mass)
     this->mass = mass;
 }
 
-void Particle::setU(double U) {
+void Particle::setU(double U)
+{
     this->U = U;
 }
 
@@ -47,7 +48,8 @@ double Particle::getMass()
     return mass;
 }
 
-double Particle::getU() {
+double Particle::getU()
+{
     return U;
 }
 
