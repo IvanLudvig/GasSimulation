@@ -1,45 +1,14 @@
 #include "../include/Particle.h"
 
 
-Particle::Particle(double mass, double radius)
+Particle::Particle(double mass, double radius, vector3D pos, vector3D speed, vector3D acceleration, vector3D force)
+        : mass{mass},
+          radius{radius},
+          pos{pos},
+          speed{speed},
+          acceleration{acceleration},
+          force{force}
 {
-    this->mass = mass;
-    this->radius = radius;
-    pos = vector3D(0, 0, 0);
-    speed = vector3D(0, 0, 0);
-    acceleration = vector3D(0, 0, 0);
-    force = vector3D(0, 0, 0);
-}
-
-Particle::Particle(double mass, double radius, vector3D pos)
-{
-    this->mass = mass;
-    this->pos = pos;
-    this->radius = radius;
-    speed = vector3D(0, 0, 0);
-    acceleration = vector3D(0, 0, 0);
-    force = vector3D(0, 0, 0);
-}
-
-Particle::Particle(double mass, double radius, vector3D pos, vector3D speed)
-{
-    this->mass = mass;
-    this->radius = radius;
-    this->pos = pos;
-    this->speed = speed;
-    acceleration = vector3D(0, 0, 0);
-    force = vector3D(0, 0, 0);
-    std::cout << pos << " " << speed << std::endl;
-}
-
-Particle::Particle(double mass, double radius, vector3D pos, vector3D speed, vector3D acceleration)
-{
-    this->mass = mass;
-    this->radius = radius;
-    this->pos = pos;
-    this->speed = speed;
-    this->acceleration = acceleration;
-    force = vector3D(0, 0, 0);
 }
 
 
@@ -98,53 +67,47 @@ void Particle::update(vector3D force, double delta)
 {
     pos += speed * delta + acceleration * delta * delta / 2;
     speed += acceleration * delta;
-    acceleration = force / mass;
-    std::cout << pos << " " << speed << std::endl;
+    //acceleration = force / mass;
+    std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
 }
 
 void Particle::collideWithWalls(vector3D tank)
 {
     if (pos.getX() >= tank.getX())
     {
-        vector3D n = vector3D(1, 0, 0);
-        vector3D proj = (n * (speed * n)) - speed;
-        speed = (2 * proj) - speed;
+        vector3D n = vector3D(-1, 0, 0);
+        speed = speed - (2 * n * (speed * n));
         pos.setX(tank.getX());
     }
     if (pos.getX() <= 0)
     {
-        vector3D n = vector3D(-1, 0, 0);
-        vector3D proj = (n * (speed * n)) - speed;
-        speed = (2 * proj) - speed;
-        pos.setX(tank.getX());
+        vector3D n = vector3D(1, 0, 0);
+        speed = speed - (2 * n * (speed * n));
+        pos.setX(0);
     }
     if (pos.getY() >= tank.getY())
     {
-        vector3D n = vector3D(0, 1, 0);
-        vector3D proj = (n * (speed * n)) - speed;
-        speed = (2 * proj) - speed;
+        vector3D n = vector3D(0, -1, 0);
+        speed = speed - (2 * n * (speed * n));
         pos.setY(tank.getY());
     }
     if (pos.getY() <= 0)
     {
-        vector3D n = vector3D(0, -1, 0);
-        vector3D proj = (n * (speed * n)) - speed;
-        speed = (2 * proj) - speed;
-        pos.setY(tank.getY());
+        vector3D n = vector3D(0, 1, 0);
+        speed = speed - (2 * n * (speed * n));
+        pos.setY(0);
     }
     if (pos.getZ() >= tank.getZ())
     {
-        vector3D n = vector3D(0, 0, 1);
-        vector3D proj = (n * (speed * n)) - speed;
-        speed = (2 * proj) - speed;
+        vector3D n = vector3D(0, 0, -1);
+        speed = speed - (2 * n * (speed * n));
         pos.setZ(tank.getZ());
     }
     if (pos.getZ() <= 0)
     {
-        vector3D n = vector3D(0, 0, -1);
-        vector3D proj = (n * (speed * n)) - speed;
-        speed = (2 * proj) - speed;
-        pos.setZ(tank.getZ());
+        vector3D n = vector3D(0, 0, 1);
+        speed = speed - (2 * n * (speed * n));
+        pos.setZ(0);
     }
 }
 
@@ -157,5 +120,3 @@ bool Particle::isNear(Particle p)
 {
     return (p.getPos() - pos).length() <= radius;
 }
-
-

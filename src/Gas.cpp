@@ -1,13 +1,8 @@
 #include "Gas.h"
 
-Gas::Gas(int N, double molarMass, vector3D tank, double e, double b)
+Gas::Gas(int N, double molarMass, vector3D tank, double e, double b) : N{N}, molarMass{molarMass}, tank{tank}, e{e},
+                                                                       b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
-    this->N = N;
-    this->tank = tank;
-    this->molarMass = molarMass;
-    this->e = e;
-    this->b = b;
-    this->V = tank.getX() * tank.getY() * tank.getZ();
     std::mt19937 gen;
     std::uniform_real_distribution<double> dis{0, 1};
     for (int i = 0; i < N; i++)
@@ -23,7 +18,7 @@ Gas::Gas(int N, double molarMass, vector3D tank, double e, double b)
     {
         tree.add(particles.at(i));
     }
-    std::cout<<tree<<std::endl;
+    std::cout << tree << std::endl;
 }
 
 Gas::Gas(std::vector<Particle> particles, vector3D tank)
@@ -36,7 +31,7 @@ Gas::Gas(std::vector<Particle> particles, vector3D tank)
     {
         tree.add(particles.at(i));
     }
-    std::cout<<tree<<std::endl;
+    std::cout << tree << std::endl;
 }
 
 int Gas::getN()
@@ -44,11 +39,13 @@ int Gas::getN()
     return N;
 }
 
-double Gas::getE() {
+double Gas::getE()
+{
     return e;
 }
 
-double Gas::getB() {
+double Gas::getB()
+{
     return b;
 }
 
@@ -70,7 +67,7 @@ void Gas::update(double delta)
         particle.update(vector3D(0, 0, 0), delta);
         particle.collideWithWalls(tank);
     }
-    collide();
+    //collide();
 
     //Computing gas parameters
     double rmsSpeed = 0;  //squared root-mean-square speed
@@ -91,8 +88,9 @@ void Gas::collide()
         {
             if (p1->isNear(*p2))
             {
-                double U = 4 * getE()/(p1->particleSpacing(*p2)) * (pow((getB()/p1->particleSpacing(*p2)), 12) - pow((getB()/p1->particleSpacing(*p2)), 6));
-                vector3D n = p2->getPos()- p1->getPos()/p1->particleSpacing(*p2);
+                double U = 4 * getE() / (p1->particleSpacing(*p2)) *
+                           (pow((getB() / p1->particleSpacing(*p2)), 12) - pow((getB() / p1->particleSpacing(*p2)), 6));
+                vector3D n = p2->getPos() - p1->getPos() / p1->particleSpacing(*p2);
                 p1->setForce(p1->getForce() + (-1) * (U) * (n));
             }
         }

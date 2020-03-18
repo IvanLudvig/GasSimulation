@@ -1,17 +1,11 @@
 #include "../include/vector3D.h"
 
-vector3D::vector3D()
+vector3D::vector3D() : x{0}, y{0}, z{0}
 {
-    x = 0;
-    y = 0;
-    z = 0;
 }
 
-vector3D::vector3D(double x, double y, double z)
+vector3D::vector3D(double x, double y, double z) : x{x}, y{y}, z{z}
 {
-    this->x = x;
-    this->y = y;
-    this->z = z;
 }
 
 void vector3D::setX(double x)
