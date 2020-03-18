@@ -9,5 +9,5 @@ int main()
         std::cout<<i*0.1<<std::endl;
         gas.update(0.1);
     }
-    return 0;
+    return 0;//984
 }
