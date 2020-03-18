@@ -70,7 +70,7 @@ void Gas::update(double delta)
         particle.update(vector3D(0, 0, 0), delta);
         particle.collideWithWalls(tank);
     }
-    collide();
+    //collide();
 
     //Computing gas parameters
     double rmsSpeed = 0;  //squared root-mean-square speed
