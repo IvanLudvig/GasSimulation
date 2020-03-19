@@ -130,6 +130,18 @@ double vector3D::module()
     return sqrt(x * x + y * y + z * z);
 }
 
+vector3D vector3D::norm()
+{
+    vector3D result = {*this / this->module()};
+    return result;
+}
+
+vector3D vector3D::normalize()
+{
+    *this /= this->module();
+    return *this;
+}
+
 vector3D operator*(const double &b, vector3D &a)
 {
     vector3D result = {a.getX() * b, a.getY() * b, a.getZ() * b};
