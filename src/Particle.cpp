@@ -123,10 +123,10 @@ void Particle::collideWithWalls(vector3D tank)
 
 double Particle::particleSpacing(Particle p)
 {
-    return (getPos() - p.getPos()).length();
+    return (getPos() - p.getPos()).module();
 }
 
 bool Particle::isNear(Particle p)
 {
-    return (p.getPos() - pos).length() <= radius;
+    return (p.getPos() - pos).module() <= radius;
 }
