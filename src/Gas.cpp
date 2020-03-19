@@ -73,7 +73,7 @@ void Gas::update(double delta)
     double rmsSpeed = 0;  //squared root-mean-square speed
     for (auto &particle : particles)
     {
-        rmsSpeed += particle.getSpeed().length() * particle.getSpeed().length();
+        rmsSpeed += particle.getSpeed().module() * particle.getSpeed().module();
     }
     rmsSpeed /= N;
     T = (rmsSpeed * molarMass) / (3 * R);
