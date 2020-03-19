@@ -125,7 +125,7 @@ vector3D vector3D::operator/=(const double &b)
 }
 
 // vector's length:
-double vector3D::length()
+double vector3D::module()
 {
     return sqrt(x * x + y * y + z * z);
 }
