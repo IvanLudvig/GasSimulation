@@ -47,7 +47,7 @@ public:
 
     void collideWithWalls(vector3D tank);
 
-    void collideWithParticle(Particle p);
+    void collideWithParticle(Particle& p);
 
     double particleSpacing(Particle p);
 
