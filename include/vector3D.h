@@ -40,7 +40,7 @@ public:
     vector3D operator*= (const double &b);
     vector3D operator/= (const double &b);
 
-    double length();
+    double module();
 };
 
 vector3D operator*(const double& b, vector3D& a);
