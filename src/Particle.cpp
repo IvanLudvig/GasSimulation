@@ -123,8 +123,8 @@ void Particle::collideWithWalls(vector3D tank)
 
 void Particle::collideWithParticle(Particle& p)
 {
-    vector3D e = p.getPos() - getPos();
-    vector3D temp = 2 * (e * (p.getSpeed() - getSpeed()) * e / ((p.getMass() + getMass()) * e.module() * e.module());
+    vector3D e = p.getPos() - pos;
+    vector3D temp = 2 * (e * (p.getSpeed() - speed) * e / ((p.getMass() + mass) * e.module() * e.module());
     speed += p.getMass() * temp;
     p.setSpeed(p.getSpeed() - mass * temp);
 }
