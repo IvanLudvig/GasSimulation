@@ -9,8 +9,7 @@ class Octree
 {
 private:
     //8 subtrees, index using (left=4, right=0) + (bottom=2, top=0) + (far=1, near=0)
-    Octree* children[8] = {NULL};
-    std::vector<Particle> particles = {};
+    Octree *children[8] = {NULL};
 
     //geometry
     vector3D farBottomLeft;
@@ -19,21 +18,36 @@ private:
 
     //tree depth
     int level = 0;
+    int N = 0;
     //total weight of containing particles
-    float weight = 0;
+    double weight = 0;
     //weighted mean position
     vector3D meanPos;
+    //threshold for interaction
+    double threshold = 0.5;
+
+protected:
+    std::vector<Particle> particles = {};
+
+    bool isNear(const Particle &p) const;
+
     bool isLeaf() const;
+
 public:
     Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth);
 
     Octree();
+
     ~Octree();
 
-    void add(Particle p);
-    std::ostream& print(std::ostream&, const std::string& indent) const;
+    void add(const Particle &p);
 
-    friend std::ostream& operator<<(std::ostream& out, const Octree& o) {
+    void update(Particle &p, const double &e, const double &b);
+
+    std::ostream &print(std::ostream &, const std::string &indent) const;
+
+    friend std::ostream &operator<<(std::ostream &out, const Octree &o)
+    {
         return o.print(out, {});
     }
 };

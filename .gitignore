@@ -16,7 +16,7 @@
 *.dylib
 *.dll
 
-# Fortran module files
+# Fortran length files
 *.mod
 *.smod
 

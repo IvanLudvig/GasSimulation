@@ -12,8 +12,9 @@ Octree::Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth)
 Octree::Octree()
 {}
 
-void Octree::add(Particle p)
+void Octree::add(const Particle &p)
 {
+    N++;
     if (level == 0 || (particles.empty() && isLeaf()))
     {
         particles.push_back(p);
@@ -39,6 +40,37 @@ void Octree::add(Particle p)
             add(o);
     }
     child->add(p);
+}
+
+void Octree::update(Particle &p, const double &e, const double &b)
+{
+    double U = 0;
+    vector3D force;
+    for (int i = 0; i < 8; i++)
+    {
+        if(children[i]==NULL){
+            continue;
+        }
+        if (children[i]->isLeaf())
+        {
+            double dist = distance(p, children[i]->particles.at(0));
+            vector3D n = (children[i]->particles.at(0).getPos() - p.getPos()) / dist;
+            U += 4 * e * (pow(b / dist, 12) - pow(b / dist, 6));
+            force -= U * n / dist;
+        } else if (children[i]->isNear(p))
+        {
+            children[i]->update(p, e, b);
+        } else
+        {
+            double dist = distance(children[i]->meanPos, p.getPos());
+            vector3D n = (children[i]->meanPos - p.getPos()) / dist;
+            U += children[i]->N * 4 * e * (pow(b / dist, 12) -
+                          pow(b / dist, 6));
+            force -= children[i]->N * U * n / dist;
+        }
+    }
+    p.setU(U);
+    p.setForce(force);
 }
 
 std::ostream &operator<<(std::ostream &os, Particle &p)
@@ -77,19 +109,28 @@ std::ostream &Octree::print(std::ostream &os, const std::string &indent) const
 
 bool Octree::isLeaf() const
 {
+    /*
     for (int i = 0; i < 8; i++)
     {
         if (children[i] != NULL)
         {
             return false;
         }
-    }
-
-    return true;
+    }*/
+    return N == 1;
 }
 
 
 Octree::~Octree()
 {
-    delete *children;
+    for (int i = 0; i < 8; i++)
+    {
+        delete children[i];
+    }
 }
+
+bool Octree::isNear(const Particle &p) const
+{
+    return distance(farBottomLeft, nearTopRight) / distance(p.getPos(), meanPos) > threshold;
+}
+

@@ -16,8 +16,10 @@ private:
     vector3D force;
 
 public:
-    Particle(double mass = 0, double radius = 0, vector3D pos = vector3D(0, 0, 0), vector3D speed = vector3D(0, 0, 0),
-             vector3D acceleration = vector3D(0, 0, 0), vector3D force = vector3D(0, 0, 0));
+    Particle(const double &mass = 0, const double &radius = 0, const vector3D &pos = vector3D(0, 0, 0),
+             const vector3D &speed = vector3D(0, 0, 0),
+             const vector3D &acceleration = vector3D(0, 0, 0),
+             const vector3D &force = vector3D(0, 0, 0));
 
     void setMass(double mass);
 
@@ -35,24 +37,23 @@ public:
 
     double getU();
 
-    vector3D getPos();
+    vector3D getPos() const;
 
-    vector3D getSpeed();
+    vector3D getSpeed() const;
 
-    vector3D getAcceleration();
+    vector3D getAcceleration() const;
 
-    vector3D getForce();
+    vector3D getForce() const;
 
-    void update(vector3D force, double delta);
+    void update(double delta);
 
     void collideWithWalls(vector3D tank);
 
-    void collideWithParticle(Particle& p);
-
-    double particleSpacing(Particle p);
+    void collideWithParticle(Particle &p);
 
     bool isNear(Particle p);
 };
 
+double distance(const Particle &p1, const Particle &p2);
 
 #endif //GASSIMULATION_PARTICLE_H

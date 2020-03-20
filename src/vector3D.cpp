@@ -44,7 +44,7 @@ vector3D vector3D::operator+(const vector3D &b)
     return result;
 }
 
-vector3D vector3D::operator-(const vector3D &b)
+vector3D vector3D::operator-(const vector3D &b) const
 {
     vector3D result = {x - b.x, y - b.y, z - b.z};
     return result;
@@ -125,20 +125,20 @@ vector3D vector3D::operator/=(const double &b)
 }
 
 // vector's length:
-double vector3D::module()
+double vector3D::length()
 {
     return sqrt(x * x + y * y + z * z);
 }
 
 vector3D vector3D::norm()
 {
-    vector3D result = {*this / this->module()};
+    vector3D result = {*this / this->length()};
     return result;
 }
 
 vector3D vector3D::normalize()
 {
-    *this /= this->module();
+    *this /= this->length();
     return *this;
 }
 
@@ -152,6 +152,11 @@ std::ostream &operator<<(std::ostream &out, vector3D a)
 {
     out << "(" << a.getX() << ", " << a.getY() << ", " << a.getZ() << ")";
     return out;
+}
+
+double distance(const vector3D &v1, const vector3D &v2)
+{
+    return (v1 - v2).length();
 }
 //use () to display vector product of a, b
 //example: cout << (a^b);

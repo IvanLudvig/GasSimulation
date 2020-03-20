@@ -62,39 +62,22 @@ double Gas::getPressure()
 void Gas::update(double delta)
 {
     //Particle collisions
-    for (auto &particle : particles)
+    for (auto &p : particles)
     {
-        particle.update(vector3D(0, 0, 0), delta);
-        particle.collideWithWalls(tank);
+        p.update(delta);
+        p.collideWithWalls(tank);
+        tree.update(p, e, b);
     }
-    //collide();
 
     //Computing gas parameters
     double rmsSpeed = 0;  //squared root-mean-square speed
-    for (auto &particle : particles)
+    for (auto &p : particles)
     {
-        rmsSpeed += particle.getSpeed().module() * particle.getSpeed().module();
+        rmsSpeed += p.getSpeed().length() * p.getSpeed().length();
     }
     rmsSpeed /= N;
     T = (rmsSpeed * molarMass) / (3 * R);
     P = (N * R * T) / (Na * V);
 }
 
-void Gas::collide()
-{
-    for (auto p1 = particles.begin(); p1 < particles.end() - 1; p1++)
-    {
-        for (auto p2 = p1 + 1; p2 < particles.end(); p2++)
-        {
-            if (p1->isNear(*p2))
-            {
-                p1->setU(p1->getU() + 4 * getE() *
-                                      (pow((getB() / p1->particleSpacing(*p2)), 12) -
-                                       pow((getB() / p1->particleSpacing(*p2)), 6)));
-                vector3D n = (p2->getPos() - p1->getPos()) / p1->particleSpacing(*p2);
-                p1->setForce(p1->getForce() + (-1) * (p1->getU()) * (n) / (p1->particleSpacing(*p2)));
-            }
-        }
-    }
-}
 

@@ -1,7 +1,8 @@
 #include "../include/Particle.h"
 
 
-Particle::Particle(double mass, double radius, vector3D pos, vector3D speed, vector3D acceleration, vector3D force)
+Particle::Particle(const double &mass, const double &radius, const vector3D &pos, const vector3D &speed,
+                   const vector3D &acceleration, const vector3D &force)
         : mass{mass},
           radius{radius},
           pos{pos},
@@ -53,31 +54,32 @@ double Particle::getU()
     return U;
 }
 
-vector3D Particle::getPos()
+
+vector3D Particle::getPos() const
 {
     return pos;
 }
 
-vector3D Particle::getSpeed()
+vector3D Particle::getSpeed() const
 {
     return speed;
 }
 
-vector3D Particle::getAcceleration()
+vector3D Particle::getAcceleration() const
 {
     return acceleration;
 }
 
-vector3D Particle::getForce()
+vector3D Particle::getForce() const
 {
     return force;
 }
 
-void Particle::update(vector3D force, double delta)
+void Particle::update(double delta)
 {
     pos += speed * delta + acceleration * delta * delta / 2;
     speed += acceleration * delta;
-    //acceleration = force / mass;
+    acceleration = force / mass;
     std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
 }
 
@@ -121,20 +123,20 @@ void Particle::collideWithWalls(vector3D tank)
     }
 }
 
-void Particle::collideWithParticle(Particle& p)
+void Particle::collideWithParticle(Particle &p)
 {
     vector3D e = p.getPos() - pos;
-    vector3D temp = 2 * (e * (p.getSpeed() - speed) * e / ((p.getMass() + mass) * e.module() * e.module());
-    speed += p.getMass() * temp;
-    p.setSpeed(p.getSpeed() - mass * temp);
-}
-
-double Particle::particleSpacing(Particle p)
-{
-    return (getPos() - p.getPos()).module();
+    //vector3D temp = 2.0 * (e * (p.getSpeed() - speed) * e / ((p.getMass() + mass) * e.length() * e.length()));
+    //speed += p.getMass() * temp;
+    //p.setSpeed(p.getSpeed() - mass * temp);
 }
 
 bool Particle::isNear(Particle p)
 {
-    return (p.getPos() - pos).module() <= radius;
+    return (p.getPos() - pos).length() <= radius;
+}
+
+double distance(const Particle &p1, const Particle &p2)
+{
+    return distance(p1.getPos(), p2.getPos());
 }
