@@ -66,7 +66,7 @@ void Octree::update(Particle &p, const double &e, const double &b)
             vector3D n = (children[i]->meanPos - p.getPos()) / dist;
             U += children[i]->N * 4 * e * (pow(b / dist, 12) -
                           pow(b / dist, 6));
-            force -= children[i]->N * U * n / dist;
+            force -= U * n / dist;
         }
     }
     p.setU(U);

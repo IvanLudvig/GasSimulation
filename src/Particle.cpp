@@ -126,9 +126,9 @@ void Particle::collideWithWalls(vector3D tank)
 void Particle::collideWithParticle(Particle &p)
 {
     vector3D e = p.getPos() - pos;
-    //vector3D temp = 2.0 * (e * (p.getSpeed() - speed) * e / ((p.getMass() + mass) * e.length() * e.length()));
-    //speed += p.getMass() * temp;
-    //p.setSpeed(p.getSpeed() - mass * temp);
+    vector3D temp = (e * (p.getSpeed() - speed) * e / ((p.getMass() + mass) * e.length() * e.length()))*2;
+    speed += p.getMass() * temp;
+    p.setSpeed(p.getSpeed() - mass * temp);
 }
 
 bool Particle::isNear(Particle p)
