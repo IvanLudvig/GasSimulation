@@ -16,10 +16,10 @@ private:
     vector3D force;
 
 public:
-    Particle(const double &mass = 0, const double &radius = 0, const vector3D &pos = vector3D(0, 0, 0),
-             const vector3D &speed = vector3D(0, 0, 0),
-             const vector3D &acceleration = vector3D(0, 0, 0),
-             const vector3D &force = vector3D(0, 0, 0));
+    Particle(const double &mass = 0, const double &radius = 0, const vector3D &pos = vector3D(),
+             const vector3D &speed = vector3D(),
+             const vector3D &acceleration = vector3D(),
+             const vector3D &force = vector3D());
 
     void setMass(double mass);
 

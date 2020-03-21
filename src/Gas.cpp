@@ -7,11 +7,11 @@ Gas::Gas(int N, double molarMass, vector3D tank, double e, double b) : N{N}, mol
     std::uniform_real_distribution<double> dis{0, 1};
     for (int i = 0; i < N; i++)
     {
-        particles.push_back(Particle(molarMass / Na, 0,
-                                     vector3D(dis(gen) * tank.getX(),
-                                              dis(gen) * tank.getY(),
-                                              dis(gen) * tank.getZ()),
-                                     (vector3D(dis(gen), dis(gen), dis(gen)))));
+        particles.emplace_back(Particle(molarMass / Na, 0,
+                                        vector3D(dis(gen) * tank.getX(),
+                                                 dis(gen) * tank.getY(),
+                                                 dis(gen) * tank.getZ()),
+                                        (vector3D(dis(gen), dis(gen), dis(gen)))));
     }
     this->tree = Octree(vector3D(0, 0, 0), tank, 10);
     for (int i = 0; i < N; i++)
@@ -59,14 +59,14 @@ double Gas::getPressure()
     return 0;
 }
 
-void Gas::update(double delta)
+void Gas::update()
 {
     //Particle collisions
     for (auto &p : particles)
     {
-        p.update(delta);
-        p.collideWithWalls(tank);
         tree.update(p, e, b);
+        p.update(tree.getDelta());
+        //p.collideWithWalls(tank);
     }
 
     //Computing gas parameters

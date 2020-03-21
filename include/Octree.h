@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <climits>
 #include "Particle.h"
 
 class Octree
@@ -24,7 +25,9 @@ private:
     //weighted mean position
     vector3D meanPos;
     //threshold for interaction
+    double delta = INT_MAX;
     double threshold = 0.5;
+    double eps = 1e-6;
 
 protected:
     std::vector<Particle> particles = {};
@@ -43,6 +46,8 @@ public:
     void add(const Particle &p);
 
     void update(Particle &p, const double &e, const double &b);
+
+    double getDelta() const;
 
     std::ostream &print(std::ostream &, const std::string &indent) const;
 

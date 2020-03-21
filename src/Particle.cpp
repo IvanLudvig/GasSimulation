@@ -81,6 +81,7 @@ void Particle::update(double delta)
     speed += acceleration * delta;
     acceleration = force / mass;
     std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
+    std::cout << force << " " << acceleration << std::endl;
 }
 
 void Particle::collideWithWalls(vector3D tank)

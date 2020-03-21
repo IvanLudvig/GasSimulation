@@ -30,7 +30,7 @@ public:
     double getB();
 
     //Particle parameters update, collision with walls and gas parameters update
-    void update(double delta);
+    void update();
 
     double getTemperature();
 

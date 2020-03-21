@@ -15,9 +15,10 @@ Octree::Octree()
 void Octree::add(const Particle &p)
 {
     N++;
+    delta = INT_MAX;
     if (level == 0 || (particles.empty() && isLeaf()))
     {
-        particles.push_back(p);
+        particles.emplace_back(std::move(p));
         return;
     }
     const bool left = p.getPos().getX() < middle.getX();
@@ -37,26 +38,33 @@ void Octree::add(const Particle &p)
         auto to_move = std::move(particles);
         particles.clear();
         for (auto &o: to_move)
-            add(o);
+            add(std::move(o));
     }
-    child->add(p);
+    child->add(std::move(p));
 }
 
 void Octree::update(Particle &p, const double &e, const double &b)
 {
     double U = 0;
-    vector3D force;
+    vector3D force(0, 0, 0);
     for (int i = 0; i < 8; i++)
     {
-        if(children[i]==NULL){
+        if (children[i] == NULL)
+        {
             continue;
         }
         if (children[i]->isLeaf())
         {
             double dist = distance(p, children[i]->particles.at(0));
+            if (dist <= eps)
+            {
+                //same particle
+                continue;
+            }
             vector3D n = (children[i]->particles.at(0).getPos() - p.getPos()) / dist;
             U += 4 * e * (pow(b / dist, 12) - pow(b / dist, 6));
             force -= U * n / dist;
+            delta = std::min(delta, dist / (children[i]->particles.at(0).getSpeed() + p.getSpeed()).length());
         } else if (children[i]->isNear(p))
         {
             children[i]->update(p, e, b);
@@ -65,7 +73,7 @@ void Octree::update(Particle &p, const double &e, const double &b)
             double dist = distance(children[i]->meanPos, p.getPos());
             vector3D n = (children[i]->meanPos - p.getPos()) / dist;
             U += children[i]->N * 4 * e * (pow(b / dist, 12) -
-                          pow(b / dist, 6));
+                                           pow(b / dist, 6));
             force -= U * n / dist;
         }
     }
@@ -132,5 +140,10 @@ Octree::~Octree()
 bool Octree::isNear(const Particle &p) const
 {
     return distance(farBottomLeft, nearTopRight) / distance(p.getPos(), meanPos) > threshold;
+}
+
+double Octree::getDelta() const
+{
+    return delta;
 }
 
