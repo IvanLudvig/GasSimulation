@@ -1,4 +1,5 @@
 #include "Gas.h"
+#include "vector3D.h"
 
 Gas::Gas(int N, double molarMass, vector3D tank, double e, double b) : N{N}, molarMass{molarMass}, tank{tank}, e{e},
                                                                        b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
@@ -80,4 +81,30 @@ void Gas::update()
     P = (N * R * T) / (Na * V);
 }
 
-
+void Gas::setMaxwellDistribution(double T)
+{
+    int size = 0;
+    int F;
+    int v = 10;
+    while (size < N)
+    {
+        F = 4 * 3.14 * pow((molarMass / (Na * 2 * 3.14 * k * T)), 1.5) * pow(v, 2) *
+            exp(-molarMass * v * v / (2 * k * T));
+        for (int i = size; i < size + F * N; i++)
+        {
+            vector3D V;
+            switch (v % 3)
+            {
+                case 0:
+                    V = vector3D(v, 0, 0);
+                case 1:
+                    V = vector3D(0, v, 0);
+                case 2:
+                    V = vector3D(0, 0, v);
+            }
+            particles[i].setSpeed(V);
+        }
+        size += F * N;
+        v++;
+    }
+}

@@ -36,6 +36,8 @@ public:
 
     double getPressure();
 
+    void setMaxwellDistribution(double T);
+
     //Collision between particles
     void collide();
 };
