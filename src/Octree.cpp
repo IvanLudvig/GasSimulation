@@ -15,7 +15,8 @@ Octree::Octree()
 void Octree::add(const Particle &p)
 {
     N++;
-    delta = INT_MAX;
+    meanPos = (((N-1)*meanPos) + p.getPos())/N;
+    delta = 0;
     if (level == 0 || (particles.empty() && isLeaf()))
     {
         particles.emplace_back(std::move(p));
@@ -46,7 +47,7 @@ void Octree::add(const Particle &p)
 void Octree::update(Particle &p, const double &e, const double &b)
 {
     double U = 0;
-    vector3D force(0, 0, 0);
+    p.setForce(vector3D(0, 0, 0));
     for (int i = 0; i < 8; i++)
     {
         if (children[i] == NULL)
@@ -63,8 +64,10 @@ void Octree::update(Particle &p, const double &e, const double &b)
             }
             vector3D n = (children[i]->particles.at(0).getPos() - p.getPos()) / dist;
             U += 4 * e * (pow(b / dist, 12) - pow(b / dist, 6));
-            force -= U * n / dist;
-            delta = std::min(delta, dist / (children[i]->particles.at(0).getSpeed() + p.getSpeed()).length());
+            p.addForce(-4 * e * (-pow(b / dist, 14) + pow(b / dist, 8)) * n / (b * b));
+            double newDelta = dist / (2 * (children[i]->particles.at(0).getSpeed() + p.getSpeed()).length());
+            delta = delta == 0 ? newDelta : std::min(delta, newDelta);
+            //std::cout<<"here 1 "<<i<<" "<<force<<std::endl;
         } else if (children[i]->isNear(p))
         {
             children[i]->update(p, e, b);
@@ -74,11 +77,12 @@ void Octree::update(Particle &p, const double &e, const double &b)
             vector3D n = (children[i]->meanPos - p.getPos()) / dist;
             U += children[i]->N * 4 * e * (pow(b / dist, 12) -
                                            pow(b / dist, 6));
-            force -= U * n / dist;
+            p.addForce(-1*children[i]->N * 4 * e * (-pow(b / dist, 14) + pow(b / dist, 8)) * n / (b * b));
+            //std::cout<<"here 3 "<<i<<" "<<force<<std::endl;
         }
     }
+    //std::cout<<"force "<<force<<std::endl;
     p.setU(U);
-    p.setForce(force);
 }
 
 std::ostream &operator<<(std::ostream &os, Particle &p)
@@ -144,6 +148,6 @@ bool Octree::isNear(const Particle &p) const
 
 double Octree::getDelta() const
 {
-    return delta;
+    return delta==0 ? 0.001: std::min(delta, 0.001);
 }
 

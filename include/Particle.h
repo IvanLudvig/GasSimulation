@@ -33,6 +33,8 @@ public:
 
     void setForce(vector3D force);
 
+    void addForce(vector3D force);
+
     double getMass();
 
     double getU();

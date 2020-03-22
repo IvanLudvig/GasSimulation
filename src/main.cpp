@@ -3,11 +3,10 @@
 
 int main()
 {
-    Gas gas(3, 4.0 / 1000, vector3D(10, 10, 10), 0.2, 1);
-    for (int i = 0; i < 3; i++)
+    Gas gas(5, 4.0e-3, vector3D(10, 10, 10), 10.22*(1.38e-23), 2.56);
+    for (int i = 0; i < 5000; i++)
     {
         gas.update();
-        std::cout << std::endl;
     }
-    return 0;//984
+    return 0;
 }

@@ -25,7 +25,7 @@ private:
     //weighted mean position
     vector3D meanPos;
     //threshold for interaction
-    double delta = INT_MAX;
+    double delta = 0;
     double threshold = 0.5;
     double eps = 1e-6;
 

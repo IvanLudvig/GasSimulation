@@ -43,6 +43,11 @@ void Particle::setForce(vector3D force)
     this->force = force;
 }
 
+void Particle::addForce(vector3D force)
+{
+    //std::cout<<"Asd "<<force<<std::endl;
+    this->force += force;
+}
 
 double Particle::getMass()
 {
@@ -80,8 +85,8 @@ void Particle::update(double delta)
     pos += speed * delta + acceleration * delta * delta / 2;
     speed += acceleration * delta;
     acceleration = force / mass;
-    std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
-    std::cout << force << " " << acceleration << std::endl;
+    std::cout << pos.getX()<<" "<<pos.getY()<< " "<<pos.getZ() << std::endl;
+    //std::cout<<acceleration<<std::endl;
 }
 
 void Particle::collideWithWalls(vector3D tank)
