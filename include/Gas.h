@@ -10,7 +10,7 @@ class Gas
 private:
     std::vector<Particle> particles;
     Octree tree;
-    int N;  //number of particles
+    unsigned long int N;  //number of particles
     double e, b;  //for determination of potential
     double P, V, T;
     double molarMass;
