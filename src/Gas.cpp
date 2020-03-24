@@ -127,3 +127,32 @@ void Gas::setMaxwellDistribution(double T)
         v++;
     }
 }
+
+//Potential energy of the interaction of two molecules:
+double Gas::PotentialEnergy (const double r) //r - distance between molecules
+{
+    double temp = pow (b / r, 6);
+    return 4 * e * (temp * temp - temp);
+}
+
+//Strength of the interaction of two molecules:
+double Gas::F (const double r) //r - distance between molecules
+{
+    double temp = pow (b / r, 6);
+    return 24 * e * (2 * temp * temp  - temp) / r;
+}
+
+//this function calculates energy of interaction of each molecule with each. O(N^2)
+double Gas::TotalSystemEnergy ()
+{
+    double sum = 0;
+    for(unsigned long int i = 0; i < N; ++i)
+    {
+        sum += particles[i].getMass() * (particles[i].getSpeed() * particles[i].getSpeed()) / 2;
+        for(unsigned long int j = i + 1; j < N; j++)
+        {
+            sum += PotentialEnergy((particles[i].getPos() - particles[j].getPos()).length);
+        }
+    }
+    return sum;
+}
