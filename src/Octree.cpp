@@ -45,7 +45,6 @@ void Octree::add(const Particle &p)
 
 void Octree::update(Particle &p, const double &e, const double &b)
 {
-    double U = 0;
     for (int i = 0; i < 8; i++)
     {
         if (children[i] == NULL)
@@ -61,8 +60,8 @@ void Octree::update(Particle &p, const double &e, const double &b)
                 continue;
             }
             vector3D n = (children[i]->particles.at(0).getPos() - p.getPos());
-            U += 4 * e * (pow(b / dist, 12) - pow(b / dist, 6));
             vector3D r = (p.getPos() - children[i]->particles.at(0).getPos());
+            p.addU(4  * (pow(dist, -12) - pow(dist, -6)));
             p.addForce(48  * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
             minDist = minDist==0 ? dist : std::min(minDist, dist);
         } else if (children[i]->isNear(p))
@@ -75,15 +74,12 @@ void Octree::update(Particle &p, const double &e, const double &b)
             {
                 continue;
             }
-            U += children[i]->N * 4 * e * (pow(b / dist, 12) -
-                                           pow(b / dist, 6));
             vector3D r = (p.getPos() - children[i]->meanPos);
+            p.addU(children[i]->N * 4  * (pow(dist, -12) - pow(dist, -6)));
             p.addForce(children[i]->N * 48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
         }
     }
     maxSpeed = std::max(maxSpeed, p.getSpeed().length());
-    //std::cout<<"force "<<force<<std::endl;
-    p.setU(U);
 }
 
 std::ostream &operator<<(std::ostream &os, Particle &p)

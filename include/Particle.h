@@ -11,7 +11,9 @@ class Particle
 
 private:
     double mass, radius;
-    double U;
+    double U = 0;
+    double E = 0;
+    int i = 0;
 
     vector3D pos;
     vector3D speed;
@@ -38,9 +40,13 @@ public:
 
     void addForce(vector3D force);
 
-    double getMass();
+    double getU() const;
 
-    double getU();
+    void addU(double U);
+
+    double getE() const;
+
+    double getMass();
 
     vector3D getPos() const;
 

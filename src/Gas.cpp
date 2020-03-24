@@ -6,15 +6,15 @@ Gas::Gas(int N, double molarMass, vector3D tank, double e, double b) : N{N}, mol
                                                                        b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
     vector3D grid[1000];
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 5; j++)
         {
-            for (int k = 0; k < 10; k++)
+            for (int k = 0; k < 5; k++)
             {
-                grid[i + (j * 10) + (k * 100)] = vector3D((1.0 * (i + 1) / 10) * tank.getX(),
-                                                          (1.0 * (j + 1) / 10) * tank.getY(),
-                                                          (1.0 * (k + 1) / 10) * tank.getZ());
+                grid[i + (j * 5) + (k * 25)] = vector3D((1.0 * (i + 1) / 5) * tank.getX(),
+                                                        (1.0 * (j + 1) / 5) * tank.getY(),
+                                                        (1.0 * (k + 1) / 5) * tank.getZ());
             }
         }
     }
@@ -56,24 +56,21 @@ void Gas::update()
     for (auto &p : particles)
     {
         p.setForce(vector3D(0, 0, 0));
+        p.setU(0);
         tree.update(p, e, b);
     }
     double delta = tree.getDelta();
+    double fullE= 0;
+    double fullU = 0;
     for (auto &p : particles)
     {
         p.update(delta);
+        //aproximation
+        fullU += p.getU()/2;
+        fullE += p.getE();
         p.collideWithWalls(tank);
     }
-
-    //Computing gas parameters
-    double rmsSpeed = 0;  //squared root-mean-square speed
-    for (auto &p : particles)
-    {
-        rmsSpeed += p.getSpeed().length() * p.getSpeed().length();
-    }
-    rmsSpeed /= N;
-    T = (rmsSpeed * molarMass) / (3 * R);
-    P = (N * R * T) / (Na * V);
+    std::cout<<fullU+fullE<<std::endl;
 }
 
 
@@ -124,7 +121,7 @@ void Gas::setMaxwellDistribution(double T)
                 case 2:
                     V = vector3D(0, 0, v);
             }
-            particles[i].setSpeed(V);
+            particles.at(i).setSpeed(V);
         }
         size += F * N;
         v++;

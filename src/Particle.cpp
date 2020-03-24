@@ -49,14 +49,25 @@ void Particle::addForce(vector3D force)
     this->force += force;
 }
 
+double Particle::getU() const
+{
+    return U;
+}
+
+void Particle::addU(double U)
+{
+    this->U += U;
+}
+
+double Particle::getE() const
+{
+    return E;
+}
+
+
 double Particle::getMass()
 {
     return mass;
-}
-
-double Particle::getU()
-{
-    return U;
 }
 
 
@@ -82,11 +93,16 @@ vector3D Particle::getForce() const
 
 void Particle::update(double delta)
 {
-    pos += speed * delta + acceleration * delta * delta / 2;
+    E = speed*speed/2;
+    acceleration = force;
+    pos += (speed * delta) + (acceleration * delta * delta / 2);
     speed += acceleration * delta;
-    acceleration = force / mass;
-    std::cout << pos.getX()<<" "<<pos.getY()<< " "<<pos.getZ() << std::endl;
-    //std::cout<<acceleration<<std::endl;
+    i++;
+    if (i == 10)
+    {
+        //std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
+        i = 0;
+    }
 }
 
 void Particle::collideWithWalls(vector3D tank)
@@ -132,7 +148,7 @@ void Particle::collideWithWalls(vector3D tank)
 void Particle::collideWithParticle(Particle &p)
 {
     vector3D e = p.getPos() - pos;
-    vector3D temp = (e * (p.getSpeed() - speed) * e / ((p.getMass() + mass) * e.length() * e.length()))*2;
+    vector3D temp = (e * (p.getSpeed() - speed) * e / ((p.getMass() + mass) * e.length() * e.length())) * 2;
     speed += p.getMass() * temp;
     p.setSpeed(p.getSpeed() - mass * temp);
 }
@@ -141,6 +157,7 @@ bool Particle::isNear(Particle p)
 {
     return (p.getPos() - pos).length() <= radius;
 }
+
 
 double distance(const Particle &p1, const Particle &p2)
 {
