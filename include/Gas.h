@@ -4,6 +4,7 @@
 #include <random>
 #include "Particle.h"
 #include "Octree.h"
+#include <cmath>
 
 class Gas
 {
