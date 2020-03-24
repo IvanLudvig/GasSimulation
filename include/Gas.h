@@ -40,6 +40,16 @@ public:
 
     //Collision between particles
     void collide();
+        
+    
+    //Potential energy of the interaction of two molecules:
+    double PotentialEnergy (const double r); //r - distance between molecules
+    
+    //Strength of the interaction of two molecules:
+    double F (const double r); //r - distance between molecules
+
+    //this function calculates energy of interaction of each molecule with each. O(N^2)
+    double TotalSystemEnergy ();
 };
 
 
