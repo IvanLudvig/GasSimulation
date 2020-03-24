@@ -5,6 +5,7 @@
 #include <vector>
 #include <climits>
 #include "Particle.h"
+#include <cmath>
 
 class Octree
 {
@@ -56,6 +57,17 @@ public:
     {
         return o.print(out, {});
     }
+    
+    
+    //Potential energy of the interaction of two molecules:
+    double PotentialEnergy (const double r); //r - distance between molecules
+    
+    //Strength of the interaction of two molecules:
+    double F (const double r); //r - distance between molecules
+
+    //this function calculates energy of interaction of each molecule with each. O(N^2)
+    double TotalSystemEnergy ();
+   
 };
 
 
