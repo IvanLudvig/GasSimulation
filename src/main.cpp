@@ -3,8 +3,8 @@
 
 int main()
 {
-    Gas gas(5, 4.0e-3, vector3D(10, 10, 10), 10.22*(1.38e-23), 2.56);
-    for (int i = 0; i < 5000; i++)
+    Gas gas(500, 1, vector3D(10, 10, 10), 1, 1);
+    for (int i = 0; i < 10000; i++)
     {
         gas.update();
     }

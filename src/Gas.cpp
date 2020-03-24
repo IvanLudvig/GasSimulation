@@ -1,14 +1,26 @@
 #include "Gas.h"
+#include "vector3D.h"
+
 
 Gas::Gas(int N, double molarMass, vector3D tank, double e, double b) : N{N}, molarMass{molarMass}, tank{tank}, e{e},
                                                                        b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
+    vector3D grid[1000];
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            for (int k = 0; k < 10; k++)
+            {
+                grid[i + (j * 10) + (k * 100)] = vector3D((1.0 * (i + 1) / 10) * tank.getX(),
+                                                          (1.0 * (j + 1) / 10) * tank.getY(),
+                                                          (1.0 * (k + 1) / 10) * tank.getZ());
+            }
+        }
+    }
     for (int i = 0; i < N; i++)
     {
-        particles.emplace_back(Particle(molarMass / Na, 0,
-                                        vector3D(((double) rand() / RAND_MAX) * tank.getX(),
-                                                 ((double) rand() / RAND_MAX) * tank.getY(),
-                                                 ((double) rand() / RAND_MAX) * tank.getZ())));
+        particles.emplace_back(Particle(1, 0, grid[i]));
     }
     this->tree = Octree(vector3D(0, 0, 0), tank, 10);
     for (int i = 0; i < N; i++)
@@ -36,22 +48,21 @@ Gas::Gas(std::vector<Particle> particles, vector3D tank)
 
 void Gas::update()
 {
-    //Particle collisions
-    double delta = tree.getDelta();
-    //std::cout<<"delta "<<delta<<std::endl;
     this->tree = Octree(vector3D(0, 0, 0), tank, 1000);
     for (int i = 0; i < N; i++)
     {
         tree.add(particles.at(i));
     }
-    int i =0;
     for (auto &p : particles)
     {
-        //std::cout<<i<<std::endl;
+        p.setForce(vector3D(0, 0, 0));
         tree.update(p, e, b);
+    }
+    double delta = tree.getDelta();
+    for (auto &p : particles)
+    {
         p.update(delta);
         p.collideWithWalls(tank);
-        i++;
     }
 
     //Computing gas parameters
@@ -89,4 +100,33 @@ double Gas::getTemperature()
 double Gas::getPressure()
 {
     return 0;
+}
+
+
+void Gas::setMaxwellDistribution(double T)
+{
+    int size = 0;
+    int F;
+    int v = 10;
+    while (size < N)
+    {
+        F = 4 * 3.14 * pow((molarMass / (Na * 2 * 3.14 * k * T)), 1.5) * pow(v, 2) *
+            exp(-molarMass * v * v / (2 * k * T));
+        for (int i = size; i < size + F * N; i++)
+        {
+            vector3D V;
+            switch (v % 3)
+            {
+                case 0:
+                    V = vector3D(v, 0, 0);
+                case 1:
+                    V = vector3D(0, v, 0);
+                case 2:
+                    V = vector3D(0, 0, v);
+            }
+            particles[i].setSpeed(V);
+        }
+        size += F * N;
+        v++;
+    }
 }
