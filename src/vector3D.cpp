@@ -23,17 +23,17 @@ void vector3D::setZ(double z)
     this->z = z;
 }
 
-double vector3D::getX()
+double vector3D::getX() const
 {
     return x;
 }
 
-double vector3D::getY()
+double vector3D::getY() const
 {
     return y;
 }
 
-double vector3D::getZ()
+double vector3D::getZ() const
 {
     return z;
 }
@@ -142,13 +142,13 @@ vector3D vector3D::normalize()
     return *this;
 }
 
-vector3D operator*(const double &b, vector3D &a)
+vector3D operator*(const double &b, const vector3D &a)
 {
     vector3D result = {a.getX() * b, a.getY() * b, a.getZ() * b};
     return result;
 }
 
-std::ostream &operator<<(std::ostream &out, vector3D a)
+std::ostream &operator<<(std::ostream &out, const vector3D a)
 {
     out << "(" << a.getX() << ", " << a.getY() << ", " << a.getZ() << ")";
     return out;

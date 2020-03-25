@@ -1,111 +1,30 @@
 #include "../include/Particle.h"
 
 
-Particle::Particle(const double &mass, const double &radius, const vector3D &pos, const vector3D &speed,
-                   const vector3D &acceleration, const vector3D &force)
+Particle::Particle(const double mass, const double radius, const vector3D &pos,
+                   const vector3D &speed, const vector3D &acceleration)
         : mass{mass},
           radius{radius},
           pos{pos},
           speed{speed},
-          acceleration{acceleration},
-          force{force}
+          acceleration{acceleration}
 {
 }
 
-
-void Particle::setMass(double mass)
+void Particle::update(const double delta)
 {
-    this->mass = mass;
-}
-
-void Particle::setU(double U)
-{
-    this->U = U;
-}
-
-void Particle::setPos(vector3D pos)
-{
-    this->pos = pos;
-}
-
-void Particle::setSpeed(vector3D speed)
-{
-    this->speed = speed;
-}
-
-void Particle::setAcceleration(vector3D acceleration)
-{
-    this->acceleration = acceleration;
-}
-
-void Particle::setForce(vector3D force)
-{
-    this->force = force;
-}
-
-void Particle::addForce(vector3D force)
-{
-    //std::cout<<"Asd "<<force<<std::endl;
-    this->force += force;
-}
-
-double Particle::getU() const
-{
-    return U;
-}
-
-void Particle::addU(double U)
-{
-    this->U += U;
-}
-
-double Particle::getE() const
-{
-    return E;
-}
-
-
-double Particle::getMass()
-{
-    return mass;
-}
-
-
-vector3D Particle::getPos() const
-{
-    return pos;
-}
-
-vector3D Particle::getSpeed() const
-{
-    return speed;
-}
-
-vector3D Particle::getAcceleration() const
-{
-    return acceleration;
-}
-
-vector3D Particle::getForce() const
-{
-    return force;
-}
-
-void Particle::update(double delta)
-{
-    E = speed*speed/2;
-    acceleration = force;
+    E = speed * speed / 2;
     pos += (speed * delta) + (acceleration * delta * delta / 2);
     speed += acceleration * delta;
     i++;
     if (i == 10)
     {
-        //std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
+        std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
         i = 0;
     }
 }
 
-void Particle::collideWithWalls(vector3D tank)
+void Particle::collideWithWalls(const vector3D &tank)
 {
     if (pos.getX() >= tank.getX())
     {
@@ -153,11 +72,86 @@ void Particle::collideWithParticle(Particle &p)
     p.setSpeed(p.getSpeed() - mass * temp);
 }
 
-bool Particle::isNear(Particle p)
+void Particle::setMass(const double mass)
+{
+    this->mass = mass;
+}
+
+void Particle::setU(const double U)
+{
+    this->U = U;
+}
+
+void Particle::setPos(const vector3D &pos)
+{
+    this->pos = pos;
+}
+
+void Particle::setSpeed(const vector3D &speed)
+{
+    this->speed = speed;
+}
+
+void Particle::setAcceleration(const vector3D &acceleration)
+{
+    this->acceleration = acceleration;
+}
+
+void Particle::setForce(vector3D force)
+{
+    this->acceleration = force / mass;
+}
+
+void Particle::addForce(vector3D force)
+{
+    this->acceleration += force / mass;
+}
+
+double Particle::getU() const
+{
+    return U;
+}
+
+void Particle::addU(double U)
+{
+    this->U += U;
+}
+
+double Particle::getE() const
+{
+    return E;
+}
+
+
+double Particle::getMass()
+{
+    return mass;
+}
+
+vector3D Particle::getPos() const
+{
+    return pos;
+}
+
+vector3D Particle::getSpeed() const
+{
+    return speed;
+}
+
+vector3D Particle::getAcceleration() const
+{
+    return acceleration;
+}
+
+vector3D Particle::getForce() const
+{
+    return mass * acceleration;
+}
+
+bool Particle::isNear(const Particle &p)
 {
     return (p.getPos() - pos).length() <= radius;
 }
-
 
 double distance(const Particle &p1, const Particle &p2)
 {

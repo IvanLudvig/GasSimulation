@@ -14,43 +14,36 @@ private:
     unsigned long int N;  //number of particles
     double e, b;  //for determination of potential
     double P, V, T;
+    double U, E; //energy
     double molarMass;
     vector3D tank;  //gas tank: box with vector components as its sides
 
 public:
     const double R = 8.31;  //Gas constant
     const double Na = 6.02214e23;   //Avogadro constant
-    Gas(int N, double molarMass, vector3D tank, double e, double b);
-
-    Gas(std::vector<Particle> particles, vector3D tank);
-
-    int getN();
-
-    double getE();
-
-    double getB();
+    Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b);
 
     //Particle parameters update, collision with walls and gas parameters update
     void update();
 
-    double getTemperature();
+    double getEnergy() const;
 
-    double getPressure();
+    double getTemperature() const;
+
+    double getPressure() const;
+
+    int getN() const;
 
     void setMaxwellDistribution(double T);
 
-    //Collision between particles
-    void collide();
-        
-    
     //Potential energy of the interaction of two molecules:
-    double PotentialEnergy (const double r); //r - distance between molecules
-    
+    double PotentialEnergy(double r); //r - distance between molecules
+
     //Strength of the interaction of two molecules:
-    double F (const double r); //r - distance between molecules
+    double F(double r); //r - distance between molecules
 
     //this function calculates energy of interaction of each molecule with each. O(N^2)
-    double TotalSystemEnergy ();
+    double TotalSystemEnergy();
 };
 
 

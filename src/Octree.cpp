@@ -9,8 +9,7 @@ Octree::Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth)
     level = maxDepth;
 }
 
-Octree::Octree()
-{}
+Octree::Octree() = default;
 
 void Octree::add(const Particle &p)
 {
@@ -18,7 +17,7 @@ void Octree::add(const Particle &p)
     meanPos = (((N - 1) * meanPos) + p.getPos()) / N;
     if (level == 0 || (particles.empty() && isLeaf()))
     {
-        particles.emplace_back(std::move(p));
+        particles.emplace_back(p);
         return;
     }
     const bool left = p.getPos().getX() < middle.getX();
@@ -26,7 +25,7 @@ void Octree::add(const Particle &p)
     const bool far = p.getPos().getZ() < middle.getZ();
 
     auto &child = children[4 * left + 2 * down + far];
-    if (child == NULL)
+    if (child == nullptr)
     {
         vector3D fbl = farBottomLeft;
         vector3D ntr = nearTopRight;
@@ -38,45 +37,39 @@ void Octree::add(const Particle &p)
         auto to_move = std::move(particles);
         particles.clear();
         for (auto &o: to_move)
-            add(std::move(o));
+            add(o);
     }
-    child->add(std::move(p));
+    child->add(p);
 }
 
-void Octree::update(Particle &p, const double &e, const double &b)
+void Octree::update(Particle &p)
 {
-    for (int i = 0; i < 8; i++)
+    for (auto &child : children)
     {
-        if (children[i] == NULL)
+        if (child == nullptr)
         {
             continue;
         }
-        if (children[i]->isLeaf())
+        if (child->isLeaf())
         {
-            double dist = distance(children[i]->particles.at(0), p);
+            double dist = distance(child->particles.at(0), p);
             if (dist <= eps)
             {
-                //same particle
-                continue;
+                continue; //same particle
             }
-            vector3D n = (children[i]->particles.at(0).getPos() - p.getPos());
-            vector3D r = (p.getPos() - children[i]->particles.at(0).getPos());
-            p.addU(4  * (pow(dist, -12) - pow(dist, -6)));
-            p.addForce(48  * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
-            minDist = minDist==0 ? dist : std::min(minDist, dist);
-        } else if (children[i]->isNear(p))
+            vector3D r = (p.getPos() - child->particles.at(0).getPos());
+            p.addU(4 * (pow(dist, -12) - pow(dist, -6)));
+            p.addForce(48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
+            minDist = minDist == 0 ? dist : std::min(minDist, dist);
+        } else if (child->isNear(p))
         {
-            children[i]->update(p, e, b);
+            child->update(p);
         } else
         {
-            double dist = distance(p.getPos(), children[i]->meanPos);
-            if (dist <= eps)
-            {
-                continue;
-            }
-            vector3D r = (p.getPos() - children[i]->meanPos);
-            p.addU(children[i]->N * 4  * (pow(dist, -12) - pow(dist, -6)));
-            p.addForce(children[i]->N * 48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
+            double dist = distance(p.getPos(), child->meanPos);
+            vector3D r = (p.getPos() - child->meanPos);
+            p.addU(child->N * 4 * (pow(dist, -12) - pow(dist, -6)));
+            p.addForce(child->N * 48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
         }
     }
     maxSpeed = std::max(maxSpeed, p.getSpeed().length());
@@ -145,6 +138,6 @@ bool Octree::isNear(const Particle &p) const
 
 double Octree::getDelta() const
 {
-    double delta =  maxSpeed<=eps ? 0.001 : minDist/(10*maxSpeed);
+    double delta = maxSpeed <= eps ? 0.001 : minDist / (10 * maxSpeed);
     return delta <= eps ? 0.001 : std::min(delta, 0.001);
 }

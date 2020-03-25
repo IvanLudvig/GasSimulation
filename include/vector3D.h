@@ -23,11 +23,11 @@ public:
 
     void setZ(double z);
 
-    double getX();
+    double getX() const;
 
-    double getY();
+    double getY() const;
 
-    double getZ();
+    double getZ() const;
 
     vector3D operator+(const vector3D &b);
 
@@ -59,9 +59,9 @@ public:
 
 double distance(const vector3D &v1, const vector3D &v2);
 
-vector3D operator*(const double &b, vector3D &a);
+vector3D operator*(const double &b, const vector3D &a);
 
-std::ostream &operator<<(std::ostream &out, vector3D a);
+std::ostream &operator<<(std::ostream &out, const vector3D a);
 //use () to display vector product of a, b
 //example: cout << (a^b);
 

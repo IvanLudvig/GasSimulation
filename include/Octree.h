@@ -10,7 +10,7 @@ class Octree
 {
 private:
     //8 subtrees, index using (left=4, right=0) + (bottom=2, top=0) + (far=1, near=0)
-    Octree *children[8] = {NULL};
+    Octree *children[8] = {nullptr};
 
     //geometry
     vector3D farBottomLeft;
@@ -38,7 +38,7 @@ protected:
     bool isLeaf() const;
 
 public:
-    Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth);
+    Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth = 1000);
 
     Octree();
 
@@ -46,7 +46,7 @@ public:
 
     void add(const Particle &p);
 
-    void update(Particle &p, const double &e, const double &b);
+    void update(Particle &p);
 
     double getDelta() const;
 
@@ -56,7 +56,7 @@ public:
     {
         return o.print(out, {});
     }
-   
+
 };
 
 

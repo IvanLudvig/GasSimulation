@@ -18,23 +18,20 @@ private:
     vector3D pos;
     vector3D speed;
     vector3D acceleration;
-    vector3D force;
 
 public:
-    Particle(const double &mass = 0, const double &radius = 0, const vector3D &pos = vector3D(),
-             const vector3D &speed = vector3D(),
-             const vector3D &acceleration = vector3D(),
-             const vector3D &force = vector3D());
+    Particle(const double mass = 0, const double radius = 0, const vector3D &pos = vector3D(),
+             const vector3D &speed = vector3D(), const vector3D &acceleration = vector3D());
 
-    void setMass(double mass);
+    void setMass(const double mass);
 
-    void setU(double U);
+    void setU(const double U);
 
-    void setPos(vector3D pos);
+    void setPos(const vector3D &pos);
 
-    void setSpeed(vector3D speed);
+    void setSpeed(const vector3D &speed);
 
-    void setAcceleration(vector3D acceleration);
+    void setAcceleration(const vector3D &acceleration);
 
     void setForce(vector3D force);
 
@@ -56,13 +53,13 @@ public:
 
     vector3D getForce() const;
 
-    void update(double delta);
+    void update(const double delta);
 
-    void collideWithWalls(vector3D tank);
+    void collideWithWalls(const vector3D &tank);
 
     void collideWithParticle(Particle &p);
 
-    bool isNear(Particle p);
+    bool isNear(const Particle &p);
 };
 
 double distance(const Particle &p1, const Particle &p2);
