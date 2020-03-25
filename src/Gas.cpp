@@ -134,10 +134,10 @@ double Gas::getEnergy() const
 
 double Gas::getTemperature() const
 {
-    return T;
+    return 2 * E / (3 * N);
 }
 
 double Gas::getPressure() const
 {
-    return 0;
+    return 2 * E / (3 * V);
 }
