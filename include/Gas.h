@@ -37,13 +37,15 @@ public:
     void setMaxwellDistribution(double T);
 
     //Potential energy of the interaction of two molecules:
-    double PotentialEnergy(double r); //r - distance between molecules
+    double PotentialEnergy(const double r); //r - distance between molecules
 
     //Strength of the interaction of two molecules:
     double F(double r); //r - distance between molecules
 
     //this function calculates energy of interaction of each molecule with each. O(N^2)
     double TotalSystemEnergy();
+
+    long double distributionDensity(double x);
 };
 
 

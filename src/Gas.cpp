@@ -64,80 +64,114 @@ void Gas::update()
     }
 }
 
+long double Gas::distributionDensity(double x)
+{
+    return (4 * 3.14 * pow((molarMass / (8.31 * 2 * 3.14 * T)), 1.5) * x * x *
+            exp(-molarMass * x * x / (2 * 8.31 * T)));
+}
+
 void Gas::setMaxwellDistribution(double T)
 {
+    bool stright = true;
+    double v = sqrt(2 * 8.31 * T / molarMass);
+    double vN = v;
     int size = 0;
-    int F;
-    int v = 10;
+    int i = 0;
+    long double Integral;
+    double l = 6000. / N;
+    double step = l;
+    double h = 0.1;
+    double n;
     while (size < N)
     {
-        F = 4 * 3.14 * pow((molarMass / (Na * 2 * 3.14 * k * T)), 1.5) * pow(v, 2) *
-            exp(-molarMass * v * v / (2 * k * T));
-        for (int i = size; i < size + F * N; i++)
+        double a = v - 10;
+
+        double c = a + step;
+        n = (c - a) * 1. / h;
+        Integral = h * (distributionDensity(a) + distributionDensity(c)) / 6.0;
+        for (i = 1; i <= n; i++)
+            Integral = Integral + 4.0 / 6.0 * h * distributionDensity(a + h * (i - 0.5));
+        for (i = 1; i <= n - 1; i++)
+            Integral = Integral + 2.0 / 6.0 * h * distributionDensity(a + h * i);
+        vector3D vec;
+        for (int k = 0; k < int(Integral * N); k++)
         {
-            vector3D vec;
-            switch (v % 3)
+            switch ((int) v % 3)
             {
                 case 0:
                     vec = vector3D(v, 0, 0);
+                    break;
                 case 1:
                     vec = vector3D(0, v, 0);
+                    break;
                 case 2:
                     vec = vector3D(0, 0, v);
+                    break;
             }
             particles.at(i).setSpeed(vec);
         }
-        size += F * N;
-        v++;
+        size += int(Integral * N);
+        l += step;
+        if (stright)
+        {
+            v += l;
+            stright = false;
+        } else
+        {
+            v -= l;
+            stright = true;
+        }
+        if (v < 0)
+            v = vN;
     }
 }
 
 //Potential energy of the interaction of two molecules:
-double Gas::PotentialEnergy(const double r) //r - distance between molecules
-{
-    double temp = pow(b / r, 6);
-    return 4 * e * (temp * temp - temp);
-}
+    double Gas::PotentialEnergy(const double r)//r - distance between molecules
+    {
+        double temp = pow(b / r, 6);
+        return 4 * e * (temp * temp - temp);
+    }
 
 //Strength of the interaction of two molecules:
-double Gas::F(const double r) //r - distance between molecules
-{
-    double temp = pow(b / r, 6);
-    return 24 * e * (2 * temp * temp - temp) / r;
-}
+    double Gas::F(const double r) //r - distance between molecules
+    {
+        double temp = pow(b / r, 6);
+        return 24 * e * (2 * temp * temp - temp) / r;
+    }
 
 //this function calculates energy of interaction of each molecule with each. O(N^2)
-double Gas::TotalSystemEnergy()
-{
-    double sum = 0;
-    for (unsigned long int i = 0; i < N; ++i)
+    double Gas::TotalSystemEnergy()
     {
-        sum += particles[i].getMass() * (particles[i].getSpeed() * particles[i].getSpeed()) / 2;
-        for (unsigned long int j = i + 1; j < N; j++)
+        double sum = 0;
+        for (unsigned long int i = 0; i < N; ++i)
         {
-            sum += PotentialEnergy((particles[i].getPos() - particles[j].getPos()).length());
+            sum += particles[i].getMass() * (particles[i].getSpeed() * particles[i].getSpeed()) / 2;
+            for (unsigned long int j = i + 1; j < N; j++)
+            {
+                sum += PotentialEnergy((particles[i].getPos() - particles[j].getPos()).length());
+            }
         }
+        return sum;
     }
-    return sum;
-}
 
-int Gas::getN() const
-{
-    return N;
-}
+    int Gas::getN() const
+    {
+        return N;
+    }
 
 
-double Gas::getEnergy() const
-{
-    return U + E;
-}
+    double Gas::getEnergy() const
+    {
+        return U + E;
+    }
 
-double Gas::getTemperature() const
-{
-    return 2 * E / (3 * N);
-}
+    double Gas::getTemperature() const
+    {
+        return 2 * E / (3 * N);
+    }
 
-double Gas::getPressure() const
-{
-    return 2 * E / (3 * V);
-}
+    double Gas::getPressure() const
+    {
+        return 2 * E / (3 * V);
+    }
