@@ -6,60 +6,60 @@
 double const k = 1.38 * pow(10, -23);
 double const Na = 6.022 * pow(10, 23);
 
-class Particle {
+class Particle
+{
 
-private:
-  double mass, radius;
-  double U = 0;
-  double E = 0;
-  int i = 0;
+  private:
+    double mass, radius;
+    double U = 0;
+    double E = 0;
+    int i = 0;
 
-  vector3D pos;
-  vector3D speed;
-  vector3D acceleration;
+    vector3D pos;
+    vector3D speed;
+    vector3D acceleration;
 
-public:
-  Particle(const double mass = 0, const double radius = 0,
-           const vector3D &pos = vector3D(), const vector3D &speed = vector3D(),
-           const vector3D &acceleration = vector3D());
+  public:
+    Particle(const double mass = 0, const double radius = 0, const vector3D &pos = vector3D(),
+             const vector3D &speed = vector3D(), const vector3D &acceleration = vector3D());
 
-  void setMass(const double mass);
+    void setMass(const double mass);
 
-  void setU(const double U);
+    void setU(const double U);
 
-  void setPos(const vector3D &pos);
+    void setPos(const vector3D &pos);
 
-  void setSpeed(const vector3D &speed);
+    void setSpeed(const vector3D &speed);
 
-  void setAcceleration(const vector3D &acceleration);
+    void setAcceleration(const vector3D &acceleration);
 
-  void setForce(vector3D force);
+    void setForce(vector3D force);
 
-  void addForce(vector3D force);
+    void addForce(vector3D force);
 
-  double getU() const;
+    double getU() const;
 
-  void addU(double U);
+    void addU(double U);
 
-  double getE() const;
+    double getE() const;
 
-  double getMass();
+    double getMass();
 
-  vector3D getPos() const;
+    vector3D getPos() const;
 
-  vector3D getSpeed() const;
+    vector3D getSpeed() const;
 
-  vector3D getAcceleration() const;
+    vector3D getAcceleration() const;
 
-  vector3D getForce() const;
+    vector3D getForce() const;
 
-  void update(const double delta);
+    void update(const double delta);
 
-  void collideWithWalls(const vector3D &tank);
+    void collideWithWalls(const vector3D &tank);
 
-  void collideWithParticle(Particle &p);
+    void collideWithParticle(Particle &p);
 
-  bool isNear(const Particle &p);
+    bool isNear(const Particle &p);
 };
 
 double distance(const Particle &p1, const Particle &p2);
