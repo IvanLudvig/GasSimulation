@@ -2,7 +2,7 @@
 #include "vector3D.h"
 
 Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b)
-    : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
+        : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
     // Grid for testing
     vector3D grid[1000];
@@ -13,8 +13,8 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
             for (int k = 0; k < 5; k++)
             {
                 grid[i + (j * 5) + (k * 25)] =
-                    vector3D((1.0 * (i + 1) / 5) * tank.getX(), (1.0 * (j + 1) / 5) * tank.getY(),
-                             (1.0 * (k + 1) / 5) * tank.getZ());
+                        vector3D((1.0 * (i + 1) / 5) * tank.getX(), (1.0 * (j + 1) / 5) * tank.getY(),
+                                 (1.0 * (k + 1) / 5) * tank.getZ());
             }
         }
     }
@@ -76,16 +76,22 @@ void Gas::setMaxwellDistribution(double T)
     this->T = T;
     bool stright = true;
     double v = sqrt(2 * R * T / molarMass);
+    std::cout << v << " Sasha" << std::endl;
     double vN = v;
     int size = 0;
     int i = 0;
     long double Integral;
-    double l = 6000. / N;
+    double l;
+    if (N < 700)
+        l = N * 0.035;
+    else if (N >= 700)
+        l = 10000. / N;
     double step = l;
     double h = 0.1;
     double n;
     while (size < N)
     {
+        int forC = size;
         double a = v - 10;
 
         double c = a + step;
@@ -95,36 +101,38 @@ void Gas::setMaxwellDistribution(double T)
             Integral = Integral + 4.0 / 6.0 * h * distributionDensity(a + h * (i - 0.5));
         for (i = 1; i <= n - 1; i++)
             Integral = Integral + 2.0 / 6.0 * h * distributionDensity(a + h * i);
-        vector3D vec;
-        for (int k = 0; k < int(Integral * N); k++)
+
+        for (int k = forC; k < forC + int(Integral * N); k++)
         {
-            switch ((int)v % 3)
+            vector3D vec;
+            switch ((int) v % 3)
             {
-            case 0:
-                vec = vector3D(v, 0, 0);
-                break;
-            case 1:
-                vec = vector3D(0, v, 0);
-                break;
-            case 2:
-                vec = vector3D(0, 0, v);
-                break;
+                case 0:
+                    vec = vector3D(v, 0, 0);
+                    break;
+                case 1:
+                    vec = vector3D(0, v, 0);
+                    break;
+                case 2:
+                    vec = vector3D(0, 0, v);
+                    break;
             }
             particles.at(k).setSpeed(vec);
+            size++;
+            if (size >= N - 1)
+                break;
         }
-        size += int(Integral * N);
         l += step;
         if (stright)
         {
             v += l;
             stright = false;
-        }
-        else
+        } else
         {
             v -= l;
             stright = true;
         }
-        if (v < 0)
+        if (v <= 0)
             v = vN;
     }
 }
