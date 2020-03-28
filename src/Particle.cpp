@@ -12,9 +12,9 @@ void Particle::update(const double delta)
     pos += (speed * delta) + (acceleration * delta * delta / 2);
     speed += acceleration * delta;
     i++;
-    if (i == 10)
+    if (i == 100)
     {
-        std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
+        //std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
         i = 0;
     }
 }

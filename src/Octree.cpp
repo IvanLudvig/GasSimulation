@@ -44,6 +44,7 @@ void Octree::add(const Particle &p)
 
 void Octree::update(Particle &p)
 {
+    maxSpeed = std::max(maxSpeed, p.getSpeed().length());
     for (auto &child : children)
     {
         if (child == nullptr)
@@ -61,10 +62,12 @@ void Octree::update(Particle &p)
             p.addU(4 * (pow(dist, -12) - pow(dist, -6)));
             p.addForce(48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
             minDist = minDist == 0 ? dist : std::min(minDist, dist);
+            //std::cout<<minDist<<" "<<dist<<std::endl;
         }
         else if (child->isNear(p))
         {
             child->update(p);
+            minDist = minDist == 0 ? child->minDist : std::min(minDist, child->minDist);
         }
         else
         {
@@ -74,7 +77,6 @@ void Octree::update(Particle &p)
             p.addForce(child->N * 48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
         }
     }
-    maxSpeed = std::max(maxSpeed, p.getSpeed().length());
 }
 
 std::ostream &operator<<(std::ostream &os, Particle &p)
@@ -141,6 +143,6 @@ bool Octree::isNear(const Particle &p) const
 
 double Octree::getDelta() const
 {
-    double delta = maxSpeed <= eps ? 0.001 : minDist / (10 * maxSpeed);
-    return delta <= eps ? 0.001 : std::min(delta, 0.001);
+    double delta = (maxSpeed <= eps) ? 0.1 : minDist / (100 * maxSpeed);
+    return delta;
 }
