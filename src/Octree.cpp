@@ -62,7 +62,7 @@ void Octree::update(Particle &p)
             p.addU(4 * (pow(dist, -12) - pow(dist, -6)));
             p.addForce(48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
             minDist = minDist == 0 ? dist : std::min(minDist, dist);
-            //std::cout<<minDist<<" "<<dist<<std::endl;
+            // std::cout<<minDist<<" "<<dist<<std::endl;
         }
         else if (child->isNear(p))
         {

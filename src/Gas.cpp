@@ -26,7 +26,7 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
     this->tree = Octree(vector3D(0, 0, 0), tank);
     for (int i = 0; i < N; i++)
     {
-        std::cout<<particles.at(i).getSpeed()<<std::endl;
+        std::cout << particles.at(i).getSpeed() << std::endl;
         tree.add(particles.at(i));
     }
     for (auto &p : particles)
@@ -62,7 +62,7 @@ void Gas::update()
         E += p.getE();
         p.collideWithWalls(tank);
     }
-    //std::cout<<TotalSystemEnergy()<<" "<<U+E<<std::endl;
+    // std::cout<<TotalSystemEnergy()<<" "<<U+E<<std::endl;
 }
 
 long double Gas::distributionDensity(double x)

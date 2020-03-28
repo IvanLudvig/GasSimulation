@@ -14,7 +14,7 @@ void Particle::update(const double delta)
     i++;
     if (i == 100)
     {
-        //std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
+        // std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
         i = 0;
     }
 }
