@@ -76,7 +76,6 @@ void Gas::setMaxwellDistribution(double T)
     this->T = T;
     bool stright = true;
     double v = sqrt(2 * R * T / molarMass);
-    std::cout << v << " Sasha" << std::endl;
     double vN = v;
     int size = 0;
     int i = 0;
@@ -105,17 +104,64 @@ void Gas::setMaxwellDistribution(double T)
         for (int k = forC; k < forC + int(Integral * N); k++)
         {
             vector3D vec;
-            switch ((int) v % 3)
+            switch (rand() % 8)
             {
                 case 0:
-                    vec = vector3D(v, 0, 0);
+                {
+                    vector3D n0(rand(), rand(), rand());
+                    n0 = n0 / n0.length();
+                    vec = v * n0;
                     break;
+                }
                 case 1:
-                    vec = vector3D(0, v, 0);
+                {
+                    vector3D n1(-rand(), rand(), rand());
+                    n1 = n1 / n1.length();
+                    vec = v * n1;
                     break;
+                }
                 case 2:
-                    vec = vector3D(0, 0, v);
+                {
+                    vector3D n2(rand(), -rand(), rand());
+                    n2 = n2 / n2.length();
+                    vec = v * n2;
                     break;
+                }
+                case 3:
+                {
+                    vector3D n3(rand(), rand(), -rand());
+                    n3 = n3 / n3.length();
+                    vec = v * n3;
+                    break;
+                }
+                case 4:
+                {
+                    vector3D n4(-rand(), -rand(), rand());
+                    n4 = n4 / n4.length();
+                    vec = v * n4;
+                    break;
+                }
+                case 5:
+                {
+                    vector3D n5(-rand(), rand(), -rand());
+                    n5 = n5 / n5.length();
+                    vec = v * n5;
+                    break;
+                }
+                case 6:
+                {
+                    vector3D n6(rand(), -rand(), -rand());
+                    n6 = n6 / n6.length();
+                    vec = v * n6;
+                    break;
+                }
+                case 7:
+                {
+                    vector3D n7(-rand(), -rand(), -rand());
+                    n7 = n7 / n7.length();
+                    vec = v * n7;
+                    break;
+                }
             }
             particles.at(k).setSpeed(vec);
             size++;
