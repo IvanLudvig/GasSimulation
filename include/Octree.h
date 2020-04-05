@@ -27,6 +27,7 @@ class Octree
     // threshold for interaction
     double threshold = 0.5;
     double eps = 1e-6;
+
   protected:
     std::vector<Particle> particles = {};
 
