@@ -17,10 +17,13 @@ class Gas
     double U, E; // energy
     double molarMass;
     vector3D tank; // gas tank: box with vector components as its sides
+    double delta;
 
   public:
     const double R = 8.31;        // Gas constant
     const double Na = 6.02214e23; // Avogadro constant
+    double time = 0;
+    int i = 0;
     Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b);
 
     // Particle parameters update, collision with walls and gas parameters update
