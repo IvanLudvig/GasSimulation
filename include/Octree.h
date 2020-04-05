@@ -24,9 +24,9 @@ class Octree
     double weight = 0;
     // weighted mean position
     vector3D meanPos;
+    // threshold for interaction
     double threshold = 0.5;
     double eps = 1e-6;
-
   protected:
     std::vector<Particle> particles = {};
 
@@ -34,7 +34,6 @@ class Octree
 
     bool isLeaf() const;
 
-    // threshold for interaction
     double delta;
 
   public:
