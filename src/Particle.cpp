@@ -1,5 +1,4 @@
 #include "../include/Particle.h"
-#include <cmath>
 
 Particle::Particle(const double mass, const double radius, const vector3D &pos, const vector3D &speed,
                    const vector3D &acceleration)
