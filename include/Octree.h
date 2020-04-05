@@ -56,7 +56,6 @@ class Octree
     {
         return o.print(out, {});
     }
-
 };
 
 #endif // GASSIMULATION_OCTREE_H
