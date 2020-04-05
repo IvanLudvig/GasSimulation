@@ -66,7 +66,7 @@ void Gas::update()
     P /= 6 * delta;
 
     // std::cout<<TotalSystemEnergy()<<" "<<U+E<<std::endl;
-    // std::cout<<"Preassure, Pa: "<<P<<<std::endl<<std::endl;
+    // std::cout<<"Preassure, Pa: "<<P<<std::endl<<std::endl;
 }
 
 long double Gas::distributionDensity(double x)
