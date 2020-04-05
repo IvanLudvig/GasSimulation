@@ -45,7 +45,6 @@ void Octree::add(const Particle &p)
 
 void Octree::update(Particle &p)
 {
-    maxSpeed = std::max(maxSpeed, p.getSpeed().length());
     for (auto &child : children)
     {
         if (child == nullptr)

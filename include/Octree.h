@@ -35,8 +35,6 @@ class Octree
     bool isLeaf() const;
 
     // threshold for interaction
-    double maxSpeed = 0;
-    double minDist = 0;
     double delta;
 
   public:
@@ -59,7 +57,6 @@ class Octree
         return o.print(out, {});
     }
 
-    int i = 0;
 };
 
 #endif // GASSIMULATION_OCTREE_H
