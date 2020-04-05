@@ -19,8 +19,9 @@ void Particle::update(const double delta)
     }
 }
 
-void Particle::collideWithWalls(const vector3D &tank)
+double Particle::collideWithWalls(const vector3D &tank)
 {
+    double ParticlePressure = 0;
     if (pos.getX() >= tank.getX())
     {
         vector3D n = vector3D(-1, 0, 0);
