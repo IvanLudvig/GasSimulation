@@ -1,6 +1,5 @@
 #include "Gas.h"
 #include "vector3D.h"
-#include <cmath>
 
 Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b)
     : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
@@ -56,14 +55,18 @@ void Gas::update()
     double delta = tree.getDelta();
     U = 0;
     E = 0;
+    P = 0; //preassure
     for (auto &p : particles)
     {
         p.update(delta);
         U += p.getU() / 2; // approximation
         E += p.getE();
-        p.collideWithWalls(tank);
+        P += p.collideWithWalls(tank);
     }
+    P /= 6 * delta;
+    
     // std::cout<<TotalSystemEnergy()<<" "<<U+E<<std::endl;
+    // std::cout<<"Preassure, Pa: "<<P<<<std::endl<<std::endl;
 }
 
 long double Gas::distributionDensity(double x)
