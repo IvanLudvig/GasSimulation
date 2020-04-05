@@ -1,5 +1,6 @@
 #include "Gas.h"
 #include "vector3D.h"
+#include <cmath>
 
 Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b)
     : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
