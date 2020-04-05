@@ -26,7 +26,6 @@ class Octree
     vector3D meanPos;
     double threshold = 0.5;
     double eps = 1e-6;
-
   protected:
     std::vector<Particle> particles = {};
 
@@ -37,6 +36,7 @@ class Octree
     // threshold for interaction
     double maxSpeed = 0;
     double minDist = 0;
+    double delta;
 
   public:
     Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth = 1000);
@@ -57,6 +57,8 @@ class Octree
     {
         return o.print(out, {});
     }
+
+    int i = 0;
 };
 
 #endif // GASSIMULATION_OCTREE_H

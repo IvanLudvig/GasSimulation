@@ -18,6 +18,7 @@ class Particle
     vector3D pos;
     vector3D speed;
     vector3D acceleration;
+    vector3D prevAccel = vector3D();
 
   public:
     Particle(const double mass = 0, const double radius = 0, const vector3D &pos = vector3D(),
@@ -54,6 +55,8 @@ class Particle
     vector3D getForce() const;
 
     void update(const double delta);
+
+    void updateSpeed(const double delta);
 
     void collideWithWalls(const vector3D &tank);
 
