@@ -24,6 +24,7 @@ class Octree
     double weight = 0;
     // weighted mean position
     vector3D meanPos;
+    // threshold for interaction
     double threshold = 0.5;
     double eps = 1e-6;
 
@@ -34,9 +35,7 @@ class Octree
 
     bool isLeaf() const;
 
-    // threshold for interaction
-    double maxSpeed = 0;
-    double minDist = 0;
+    double delta;
 
   public:
     Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth = 1000);

@@ -5,28 +5,28 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
     : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
     // Grid for testing
-    vector3D grid[1000];
-    for (int i = 0; i < 5; i++)
+    vector3D grid[20000];
+    for (int i = 0; i < 10; i++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 10; j++)
         {
-            for (int k = 0; k < 5; k++)
+            for (int k = 0; k < 10; k++)
             {
-                grid[i + (j * 5) + (k * 25)] =
-                    vector3D((1.0 * (i + 1) / 5) * tank.getX(), (1.0 * (j + 1) / 5) * tank.getY(),
-                             (1.0 * (k + 1) / 5) * tank.getZ());
+                grid[i + (j * 10) + (k * 100)] =
+                    vector3D((1.0 * (i + 1) / 10) * tank.getX(), (1.0 * (j + 1) / 10) * tank.getY(),
+                             (1.0 * (k + 1) / 10) * tank.getZ());
             }
         }
     }
     for (int i = 0; i < N; i++)
     {
-        particles.emplace_back(Particle(1, 0, grid[i]));
+        particles.emplace_back(Particle(1, 1, grid[i]));
     }
-    setMaxwellDistribution(300);
+    setMaxwellDistribution(2);
     this->tree = Octree(vector3D(0, 0, 0), tank);
     for (int i = 0; i < N; i++)
     {
-        std::cout << particles.at(i).getSpeed() << std::endl;
+        // std::cout << particles.at(i).getSpeed() << std::endl;
         tree.add(particles.at(i));
     }
     for (auto &p : particles)
@@ -49,13 +49,15 @@ void Gas::update()
         p.setForce(vector3D(0, 0, 0));
         p.setU(0);
         tree.update(p);
+        p.updateSpeed(delta);
     }
 
     // Update particles and compute energy
-    double delta = tree.getDelta();
+    delta = tree.getDelta();
+    time += delta;
     U = 0;
     E = 0;
-    P = 0; // preassure
+    P = 0; // pressure
     for (auto &p : particles)
     {
         p.update(delta);
@@ -64,9 +66,7 @@ void Gas::update()
         P += p.collideWithWalls(tank);
     }
     P /= 6 * delta;
-
-    // std::cout<<TotalSystemEnergy()<<" "<<U+E<<std::endl;
-    // std::cout<<"Preassure, Pa: "<<P<<std::endl<<std::endl;
+    std::cout << U + E << " " << U << " " << E << std::endl;
 }
 
 long double Gas::distributionDensity(double x)

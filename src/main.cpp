@@ -3,8 +3,8 @@
 
 int main()
 {
-    Gas gas(100, 1, vector3D(10, 10, 10), 1, 1);
-    for (int i = 0; i < 20000; i++)
+    Gas gas(1000, 1, vector3D(100, 100, 100), 1, 1);
+    for (int i = 0; i < 2000; i++)
     {
         gas.update();
     }

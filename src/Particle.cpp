@@ -8,15 +8,21 @@ Particle::Particle(const double mass, const double radius, const vector3D &pos, 
 
 void Particle::update(const double delta)
 {
+    // 1 iteration back
     E = speed * speed / 2;
     pos += (speed * delta) + (acceleration * delta * delta / 2);
-    speed += acceleration * delta;
+    prevAccel = acceleration;
     i++;
-    if (i == 100)
+    if (i == 10)
     {
         // std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
         i = 0;
     }
+}
+
+void Particle::updateSpeed(const double delta)
+{
+    speed += (prevAccel + acceleration) * delta / 2;
 }
 
 double Particle::collideWithWalls(const vector3D &tank)
