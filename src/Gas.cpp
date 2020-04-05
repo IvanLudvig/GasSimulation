@@ -55,7 +55,7 @@ void Gas::update()
     double delta = tree.getDelta();
     U = 0;
     E = 0;
-    P = 0; //preassure
+    P = 0; // preassure
     for (auto &p : particles)
     {
         p.update(delta);
@@ -64,7 +64,7 @@ void Gas::update()
         P += p.collideWithWalls(tank);
     }
     P /= 6 * delta;
-    
+
     // std::cout<<TotalSystemEnergy()<<" "<<U+E<<std::endl;
     // std::cout<<"Preassure, Pa: "<<P<<<std::endl<<std::endl;
 }
