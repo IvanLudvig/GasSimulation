@@ -62,11 +62,11 @@ void Octree::update(Particle &p)
             vector3D r = (p.getPos() - child->particles.at(0).getPos());
             p.addU(4 * (pow(dist, -12) - pow(dist, -6)));
             p.addForce(48 * (pow(dist, -14) - (0.5 * pow(dist, -8))) * r);
-            double relSpeed = (p.getSpeed()-child->particles.at(0).getSpeed()).length();
-            if(relSpeed!=0)
+            double relSpeed = (p.getSpeed() - child->particles.at(0).getSpeed()).length();
+            if (relSpeed != 0)
             {
-                double newDelta = dist/(2*relSpeed);
-                if(newDelta > 0)
+                double newDelta = dist / (2 * relSpeed);
+                if (newDelta > 0)
                 {
                     delta = (delta == 0) ? newDelta : std::min(delta, newDelta);
                 }
@@ -75,7 +75,7 @@ void Octree::update(Particle &p)
         else if (child->isNear(p))
         {
             child->update(p);
-            if(child->delta>0)
+            if (child->delta > 0)
             {
                 delta = child->delta;
             }
@@ -146,5 +146,5 @@ bool Octree::isNear(const Particle &p) const
 
 double Octree::getDelta() const
 {
-    return (delta >= eps)&&(delta<=INT_MAX) ? delta/20 : 0.01;
+    return (delta >= eps) && (delta <= INT_MAX) ? delta / 20 : 0.01;
 }
