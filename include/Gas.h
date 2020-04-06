@@ -8,7 +8,7 @@
 
 class Gas
 {
-private:
+  private:
     std::vector<Particle> particles;
     Octree tree;
     unsigned long int N; // number of particles
@@ -19,7 +19,7 @@ private:
     vector3D tank; // gas tank: box with vector components as its sides
     double delta;
 
-public:
+  public:
     const double R = 8.31;        // Gas constant
     const double Na = 6.02214e23; // Avogadro constant
     double time = 0;
