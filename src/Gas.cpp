@@ -5,24 +5,24 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
     : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
     // Grid for testing
-    vector3D grid[20000];
-    for (int i = 0; i < 10; i++)
+    vector3D grid[1000];
+    for (int i = 0; i < 5; i++)
     {
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 5; j++)
         {
-            for (int k = 0; k < 10; k++)
+            for (int k = 0; k < 5; k++)
             {
-                grid[i + (j * 10) + (k * 100)] =
-                    vector3D((1.0 * (i + 1) / 10) * tank.getX(), (1.0 * (j + 1) / 10) * tank.getY(),
-                             (1.0 * (k + 1) / 10) * tank.getZ());
+                grid[i + (j * 5) + (k * 25)] =
+                    vector3D((1.0 * (i + 1) / 5) * tank.getX(), (1.0 * (j + 1) / 5) * tank.getY(),
+                             (1.0 * (k + 1) / 5) * tank.getZ());
             }
         }
     }
     for (int i = 0; i < N; i++)
     {
-        particles.emplace_back(Particle(1, 1, grid[i]));
+        particles.emplace_back(Particle(1, 0, grid[i]));
     }
-    setMaxwellDistribution(2);
+    // setMaxwellDistribution(2);
     this->tree = Octree(vector3D(0, 0, 0), tank);
     for (int i = 0; i < N; i++)
     {
@@ -54,18 +54,15 @@ void Gas::update()
 
     // Update particles and compute energy
     delta = tree.getDelta();
-    time += delta;
     U = 0;
     E = 0;
-    P = 0; // pressure
     for (auto &p : particles)
     {
         p.update(delta);
         U += p.getU() / 2; // approximation
         E += p.getE();
-        P += p.collideWithWalls(tank);
+        p.collideWithWalls(tank);
     }
-    P /= 6 * delta;
     std::cout << U + E << " " << U << " " << E << std::endl;
 }
 
@@ -84,11 +81,11 @@ void Gas::setMaxwellDistribution(double T)
     int size = 0;
     int i = 0;
     long double Integral;
-    double l;
+    double l = 0;
     if (N < 700)
         l = N * 0.035;
     else if (N >= 700)
-        l = 10000. / N;
+        l = 10;
     double step = l;
     double h = 0.1;
     double n;

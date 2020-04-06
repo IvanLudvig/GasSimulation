@@ -13,7 +13,7 @@ void Particle::update(const double delta)
     pos += (speed * delta) + (acceleration * delta * delta / 2);
     prevAccel = acceleration;
     i++;
-    if (i == 10)
+    if (i == 100)
     {
         // std::cout << pos.getX() << " " << pos.getY() << " " << pos.getZ() << std::endl;
         i = 0;
@@ -23,54 +23,47 @@ void Particle::update(const double delta)
 void Particle::updateSpeed(const double delta)
 {
     speed += (prevAccel + acceleration) * delta / 2;
+    ;
 }
 
-double Particle::collideWithWalls(const vector3D &tank)
+void Particle::collideWithWalls(const vector3D &tank)
 {
-    double ParticlePressure = 0;
     if (pos.getX() >= tank.getX())
     {
         vector3D n = vector3D(-1, 0, 0);
-        ParticlePressure += 2 * mass * abs((speed * n) / (tank.getY() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setX(tank.getX());
     }
     if (pos.getX() <= 0)
     {
         vector3D n = vector3D(1, 0, 0);
-        ParticlePressure += 2 * mass * abs((speed * n) / (tank.getY() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setX(0);
     }
     if (pos.getY() >= tank.getY())
     {
         vector3D n = vector3D(0, -1, 0);
-        ParticlePressure += 2 * mass * abs((speed * n) / (tank.getX() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setY(tank.getY());
     }
     if (pos.getY() <= 0)
     {
         vector3D n = vector3D(0, 1, 0);
-        ParticlePressure += 2 * mass * abs((speed * n) / (tank.getX() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setY(0);
     }
     if (pos.getZ() >= tank.getZ())
     {
         vector3D n = vector3D(0, 0, -1);
-        ParticlePressure += 2 * mass * abs((speed * n) / (tank.getY() * tank.getX()));
         speed = speed - (2 * n * (speed * n));
         pos.setZ(tank.getZ());
     }
     if (pos.getZ() <= 0)
     {
         vector3D n = vector3D(0, 0, 1);
-        ParticlePressure += 2 * mass * abs((speed * n) / (tank.getY() * tank.getX()));
         speed = speed - (2 * n * (speed * n));
         pos.setZ(0);
     }
-    return ParticlePressure;
 }
 
 void Particle::collideWithParticle(Particle &p)

@@ -58,7 +58,7 @@ class Particle
 
     void updateSpeed(const double delta);
 
-    double collideWithWalls(const vector3D &tank);
+    void collideWithWalls(const vector3D &tank);
 
     void collideWithParticle(Particle &p);
 
