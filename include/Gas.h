@@ -8,7 +8,7 @@
 
 class Gas
 {
-  private:
+private:
     std::vector<Particle> particles;
     Octree tree;
     unsigned long int N; // number of particles
@@ -19,10 +19,11 @@ class Gas
     vector3D tank; // gas tank: box with vector components as its sides
     double delta;
 
-  public:
+public:
     const double R = 8.31;        // Gas constant
     const double Na = 6.02214e23; // Avogadro constant
     double time = 0;
+
     Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b);
 
     // Particle parameters update, collision with walls and gas parameters update
@@ -48,7 +49,11 @@ class Gas
     // O(N^2)
     double TotalSystemEnergy();
 
-    long double distributionDensity(double x);
+    double distributionDensity(double x);
+
+    double antiderivativeFunction(double x);
+
+    double binResearch(std::vector<double> &a, double val);
 };
 
 #endif // GASSIMULATION_GAS_H
