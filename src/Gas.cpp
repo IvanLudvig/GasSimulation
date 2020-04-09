@@ -2,7 +2,7 @@
 #include "vector3D.h"
 
 Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b)
-    : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
+        : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
     // Grid for testing
     vector3D grid[20000];
@@ -14,8 +14,8 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
             for (int k = 0; k < n; k++)
             {
                 grid[i + (j * n) + (k * n * n)] =
-                    vector3D((1.0 * (i + 1) / n) * tank.getX(), (1.0 * (j + 1) / n) * tank.getY(),
-                             (1.0 * (k + 1) / n) * tank.getZ());
+                        vector3D((1.0 * (i + 1) / n) * tank.getX(), (1.0 * (j + 1) / n) * tank.getY(),
+                                 (1.0 * (k + 1) / n) * tank.getZ());
             }
         }
     }
@@ -119,7 +119,8 @@ double Gas::binResearch(std::vector<double> &a, double val)
 
 void Gas::setMaxwellDistribution(double T)
 {
-    this->T = T;
+    T = T * e / k;
+
     int size = 0;
 
     std::vector<double> speed(1001);
@@ -194,9 +195,12 @@ void Gas::setMaxwellDistribution(double T)
             break;
         }
         }
+        vec = vec * pow(molarMass / (Na * e), 0.5);
         particles.at(size).setSpeed(vec);
         size++;
     }
+    T = T * k / e;
+    this->T = T;
 }
 
 // Potential energy of the interaction of two molecules:

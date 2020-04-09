@@ -4,7 +4,6 @@
 #include "vector3D.h"
 
 double const k = 1.38 * pow(10, -23);
-double const Na = 6.022 * pow(10, 23);
 
 class Particle
 {
