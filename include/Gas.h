@@ -4,8 +4,8 @@
 #include "Octree.h"
 #include "Particle.h"
 #include <cmath>
-#include <random>
 #include <list>
+#include <random>
 
 class Gas
 {
@@ -19,7 +19,7 @@ class Gas
     double molarMass;
     vector3D tank; // gas tank: box with vector components as its sides
     double delta;
-    //For first method of calculate preassure:
+    // For first method of calculate preassure:
     unsigned int number_of_last_iterations_to_calculate_pressure;
     std::list<double> pressure_for_last_iterations;
     unsigned int counter_for_calculate_pressure;
@@ -28,7 +28,8 @@ class Gas
     const double R = 8.31;        // Gas constant
     const double Na = 6.02214e23; // Avogadro constant
     double time = 0;
-    Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b, unsigned int number_of_last_iterations_to_calculate_preassure);
+    Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b,
+        unsigned int number_of_last_iterations_to_calculate_preassure);
 
     // Particle parameters update, collision with walls and gas parameters update
     void update();
@@ -59,7 +60,7 @@ class Gas
 
     double binResearch(std::vector<double> &a, double val);
 
-    //For first method of calculate preassure:
+    // For first method of calculate preassure:
     void Calculate_pressure_by_first_method(double Pressure);
 };
 
