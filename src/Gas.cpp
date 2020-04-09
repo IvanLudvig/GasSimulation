@@ -1,8 +1,10 @@
 #include "Gas.h"
 #include "vector3D.h"
 
-Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b)
-    : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
+Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b,
+         unsigned int number_of_last_iterations_to_calculate_pressure)
+    : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()},
+      number_of_last_iterations_to_calculate_pressure{number_of_last_iterations_to_calculate_pressure}
 {
     // Grid for testing
     vector3D grid[20000];
@@ -34,6 +36,11 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
     {
         tree.update(p);
     }
+    for(int i = 0; i < number_of_last_iterations_to_calculate_pressure; ++i)
+    {
+        pressure_for_last_iterations.push_back(0);
+    }
+    counter_for_calculate_pressure = 0;
 }
 
 void Gas::update()
@@ -64,12 +71,36 @@ void Gas::update()
         p.update(delta);
         U += p.getU() / 2; // approximation
         E += p.getE();
+
+        //First method (exist 2 methods to calculate pressure):
         P += p.collideWithWalls(tank);
-        P += p.getAcceleration() * p.getPos() / 2;
+
+        //Second method:
+        //p.collideWithWalls(tank);
+        //P += p.getAcceleration() * p.getPos() / 2;
     }
     T = getTemperature();
-    P = ((P / 3) + (N * T)) / V;
+
+    //For First method:
+    P /= delta;
+    Calculate_pressure_by_first_method(P);
+
+    //For Second method:
+    //P = ((P / 3) + (N * T)) / V;
     std::cout << P << " " << T << std::endl;
+}
+
+void Gas::Calculate_pressure_by_first_method(double Pressure)
+{
+    if(counter_for_calculate_pressure < number_of_last_iterations_to_calculate_pressure)
+        counter_for_calculate_pressure++;
+    Pressure /= 6;
+    pressure_for_last_iterations.pop_back();
+    pressure_for_last_iterations.push_front(Pressure / 6.0);
+    P = 0;
+    for(auto &pres : pressure_for_last_iterations)
+        P += pres;
+    P /= counter_for_calculate_pressure;
 }
 
 double Gas::distributionDensity(double x)
