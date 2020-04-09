@@ -34,7 +34,7 @@ double Particle::collideWithWalls(const vector3D &tank)
         ParticlePressure += 2 * mass * fabs((speed * n) / (tank.getY() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setX(tank.getX());
-        // std::cout<<"Collide With Wall"<<std::endl;
+        std::cout<<"Collide With Wall"<<std::endl;
     }
     if (pos.getX() <= 0)
     {
@@ -42,7 +42,7 @@ double Particle::collideWithWalls(const vector3D &tank)
         ParticlePressure += 2 * mass * fabs((speed * n) / (tank.getY() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setX(0);
-        // std::cout<<"Collide With Wall"<<std::endl;
+        std::cout<<"Collide With Wall"<<std::endl;
     }
     if (pos.getY() >= tank.getY())
     {
@@ -50,7 +50,7 @@ double Particle::collideWithWalls(const vector3D &tank)
         ParticlePressure += 2 * mass * fabs((speed * n) / (tank.getX() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setY(tank.getY());
-        // std::cout<<"Collide With Wall"<<std::endl;
+        std::cout<<"Collide With Wall"<<std::endl;
     }
     if (pos.getY() <= 0)
     {
@@ -58,7 +58,7 @@ double Particle::collideWithWalls(const vector3D &tank)
         ParticlePressure += 2 * mass * fabs((speed * n) / (tank.getX() * tank.getZ()));
         speed = speed - (2 * n * (speed * n));
         pos.setY(0);
-        // std::cout<<"Collide With Wall"<<std::endl;
+        std::cout<<"Collide With Wall"<<std::endl;
     }
     if (pos.getZ() >= tank.getZ())
     {
@@ -66,7 +66,7 @@ double Particle::collideWithWalls(const vector3D &tank)
         ParticlePressure += 2 * mass * fabs((speed * n) / (tank.getY() * tank.getX()));
         speed = speed - (2 * n * (speed * n));
         pos.setZ(tank.getZ());
-        // std::cout<<"Collide With Wall"<<std::endl;
+        std::cout<<"Collide With Wall"<<std::endl;
     }
     if (pos.getZ() <= 0)
     {
@@ -74,7 +74,7 @@ double Particle::collideWithWalls(const vector3D &tank)
         ParticlePressure += 2 * mass * fabs((speed * n) / (tank.getY() * tank.getX()));
         speed = speed - (2 * n * (speed * n));
         pos.setZ(0);
-        // std::cout<<"Collide With Wall"<<std::endl;
+        std::cout<<"Collide With Wall"<<std::endl;
     }
     return ParticlePressure;
 }
