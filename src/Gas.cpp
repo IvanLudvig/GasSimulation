@@ -155,10 +155,10 @@ void Gas::setMaxwellDistribution(double T)
     this->T = T;
     int size = 0;
     std::vector<double> speed(1001);
-    for (double i = 0; i < 1001 * pow(molarMass/(Na * e), 0.5); i += pow(molarMass/(Na * e), 0.5))
+    for (double i = 0; i < 1001 * pow(molarMass / (Na * e), 0.5); i += pow(molarMass / (Na * e), 0.5))
     {
-        speed[i/pow(molarMass/(Na * e), 0.5)] = antiderivativeFunction(i);
-        //std::cout << speed[i/pow(molarMass/(Na * e), 0.5)] << std::endl;
+        speed[i / pow(molarMass / (Na * e), 0.5)] = antiderivativeFunction(i);
+        // std::cout << speed[i/pow(molarMass/(Na * e), 0.5)] << std::endl;
     }
     while (size < N)
     {
@@ -171,7 +171,6 @@ void Gas::setMaxwellDistribution(double T)
             if (derivative > speed[number])
             {
                 v = number + (derivative - speed[number]) / (speed[(number + 1)] - speed[number]);
-
             }
             else
                 v = number - 1 + (derivative - speed[(number - 1)]) / (speed[number] - speed[(number - 1)]);
@@ -180,8 +179,8 @@ void Gas::setMaxwellDistribution(double T)
         {
             v = number;
         }
-        v *= pow(molarMass/(Na * e), 0.5);
-        //std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
+        v *= pow(molarMass / (Na * e), 0.5);
+        // std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
         vector3D vec;
         switch (rand() % 8)
         {
