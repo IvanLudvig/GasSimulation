@@ -65,11 +65,11 @@ void Gas::update()
         p.update(delta);
         U += p.getU() / 2; // approximation
         E += p.getE();
-        //P += p.collideWithWalls(tank);
+        // P += p.collideWithWalls(tank);
         P += p.getAcceleration() * p.getPos() / 2;
     }
     T = getTemperature();
-    //P /= 6 * delta;
+    // P /= 6 * delta;
     P = ((P / 3) + (N * T)) / V;
     std::cout << P << " " << T << std::endl;
 }
@@ -102,12 +102,10 @@ double Gas::binResearch(std::vector<double> &a, double val)
         if (a[m] < val)
         {
             l = m + 1;
-        }
-        else if (a[m] > val)
+        } else if (a[m] > val)
         {
             r = m - 1;
-        }
-        else
+        } else
         {
             return m;
         }
@@ -115,8 +113,7 @@ double Gas::binResearch(std::vector<double> &a, double val)
     if (a[l] == val)
     {
         return l;
-    }
-    else
+    } else
     {
         return -1 * l;
     }
@@ -135,7 +132,7 @@ void Gas::setMaxwellDistribution(double T)
     while (size < N)
     {
         double v;
-        double derivative = (double)(rand()) / RAND_MAX;
+        double derivative = (double) (rand()) / RAND_MAX;
         double number = binResearch(speed, derivative);
         if (number < 0)
         {
@@ -143,11 +140,9 @@ void Gas::setMaxwellDistribution(double T)
             if (derivative > speed[number])
             {
                 v = number + (derivative - speed[number]) / (speed[(number + 1)] - speed[number]);
-            }
-            else
+            } else
                 v = number - 1 + (derivative - speed[(number - 1)]) / (speed[number] - speed[(number - 1)]);
-        }
-        else
+        } else
         {
             v = number;
         }
@@ -156,49 +151,57 @@ void Gas::setMaxwellDistribution(double T)
         vector3D vec;
         switch (rand() % 8)
         {
-            case 0: {
+            case 0:
+            {
                 vector3D n0(rand(), rand(), rand());
                 n0 /= n0.length();
                 vec = v * n0;
                 break;
             }
-            case 1: {
+            case 1:
+            {
                 vector3D n1(-rand(), rand(), rand());
                 n1 /= n1.length();
                 vec = v * n1;
                 break;
             }
-            case 2: {
+            case 2:
+            {
                 vector3D n2(rand(), -rand(), rand());
                 n2 /= n2.length();
                 vec = v * n2;
                 break;
             }
-            case 3: {
+            case 3:
+            {
                 vector3D n3(rand(), rand(), -rand());
                 n3 /= n3.length();
                 vec = v * n3;
                 break;
             }
-            case 4: {
+            case 4:
+            {
                 vector3D n4(-rand(), -rand(), rand());
                 n4 /= n4.length();
                 vec = v * n4;
                 break;
             }
-            case 5: {
+            case 5:
+            {
                 vector3D n5(-rand(), rand(), -rand());
                 n5 /= n5.length();
                 vec = v * n5;
                 break;
             }
-            case 6: {
+            case 6:
+            {
                 vector3D n6(rand(), -rand(), -rand());
                 n6 /= n6.length();
                 vec = v * n6;
                 break;
             }
-            case 7: {
+            case 7:
+            {
                 vector3D n7(-rand(), -rand(), -rand());
                 n7 /= n7.length();
                 vec = v * n7;
