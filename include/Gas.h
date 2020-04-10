@@ -19,17 +19,12 @@ class Gas
     double molarMass;
     vector3D tank; // gas tank: box with vector components as its sides
     double delta;
-    // For first method of calculate preassure:
-    unsigned int number_of_last_iterations_to_calculate_pressure;
-    std::list<double> pressure_for_last_iterations;
-    unsigned int counter_for_calculate_pressure;
 
   public:
     const double R = 8.31;        // Gas constant
     const double Na = 6.02214e23; // Avogadro constant
     double time = 0;
-    Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b,
-        unsigned int number_of_last_iterations_to_calculate_preassure);
+    Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b);
 
     // Particle parameters update, collision with walls and gas parameters update
     void update();
