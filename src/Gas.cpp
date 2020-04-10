@@ -1,6 +1,7 @@
 #include "Gas.h"
 #include "vector3D.h"
 
+
 Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b)
         : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
 {
@@ -73,6 +74,7 @@ void Gas::update()
     std::cout << P << " " << T << std::endl;
 }
 
+
 double Gas::distributionDensity(double x)
 {
     return (4 * 3.14 * pow((molarMass / (8.31 * 2 * 3.14 * T)), 1.5) * x * x *
@@ -81,9 +83,11 @@ double Gas::distributionDensity(double x)
 
 double Gas::antiderivativeFunction(double x)
 {
-    double Out = sqrt(2 / 3.14) * pow(molarMass / (8.31 * T), 1.5);
-    double InLeft = sqrt(3.14 / 2) * pow((8.31 * T) / molarMass, 1.5) * erf(x * sqrt(molarMass / (8.31 * T * 2)));
-    double InRight = (8.31 * T * x * exp(-(x * x * molarMass / (8.31 * T * 2)))) / molarMass;
+    x = x * pow(e * Na / molarMass, 0.5);
+    double T0 = this->T * e / k;
+    double Out = sqrt(2 / 3.14) * pow(molarMass / (8.31 * T0), 1.5);
+    double InLeft = sqrt(3.14 / 2) * pow((8.31 * T0) / molarMass, 1.5) * erf(x * sqrt(molarMass / (8.31 * T0 * 2)));
+    double InRight = (8.31 * T0 * x * exp(-(x * x * molarMass / (8.31 * T0 * 2)))) / molarMass;
     return Out * (InLeft - InRight);
 }
 
@@ -98,10 +102,12 @@ double Gas::binResearch(std::vector<double> &a, double val)
         if (a[m] < val)
         {
             l = m + 1;
-        } else if (a[m] > val)
+        }
+        else if (a[m] > val)
         {
             r = m - 1;
-        } else
+        }
+        else
         {
             return m;
         }
@@ -109,7 +115,8 @@ double Gas::binResearch(std::vector<double> &a, double val)
     if (a[l] == val)
     {
         return l;
-    } else
+    }
+    else
     {
         return -1 * l;
     }
@@ -117,94 +124,91 @@ double Gas::binResearch(std::vector<double> &a, double val)
 
 void Gas::setMaxwellDistribution(double T)
 {
-    this->T = T * e / k;
-
+    this->T = T;
     int size = 0;
-
     std::vector<double> speed(1001);
-    for (int i = 0; i < 1001; i++)
-        speed[i] = antiderivativeFunction(i);
+    for (double i = 0; i < 1001 * pow(molarMass / (Na * e), 0.5); i += pow(molarMass / (Na * e), 0.5))
+    {
+        speed[i / pow(molarMass / (Na * e), 0.5)] = antiderivativeFunction(i);
+        // std::cout << speed[i/pow(molarMass/(Na * e), 0.5)] << std::endl;
+    }
     while (size < N)
     {
         double v;
-        double derivative = (double) (rand()) / RAND_MAX;
-
+        double derivative = (double)(rand()) / RAND_MAX;
         double number = binResearch(speed, derivative);
         if (number < 0)
         {
             number = -number;
             if (derivative > speed[number])
-                v = number + (derivative - speed[number]) / (speed[number + 1] - speed[number]);
+            {
+                v = number + (derivative - speed[number]) / (speed[(number + 1)] - speed[number]);
+            }
             else
-                v = number - 1 + (derivative - speed[number - 1]) / (speed[number] - speed[number - 1]);
-        } else
+                v = number - 1 + (derivative - speed[(number - 1)]) / (speed[number] - speed[(number - 1)]);
+        }
+        else
+        {
             v = number;
-
+        }
+        v *= pow(molarMass / (Na * e), 0.5);
+        // std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
         vector3D vec;
         switch (rand() % 8)
         {
-            case 0:
-            {
+            case 0: {
                 vector3D n0(rand(), rand(), rand());
                 n0 /= n0.length();
                 vec = v * n0;
                 break;
             }
-            case 1:
-            {
+            case 1: {
                 vector3D n1(-rand(), rand(), rand());
                 n1 /= n1.length();
                 vec = v * n1;
                 break;
             }
-            case 2:
-            {
+            case 2: {
                 vector3D n2(rand(), -rand(), rand());
                 n2 /= n2.length();
                 vec = v * n2;
                 break;
             }
-            case 3:
-            {
+            case 3: {
                 vector3D n3(rand(), rand(), -rand());
                 n3 /= n3.length();
                 vec = v * n3;
                 break;
             }
-            case 4:
-            {
+            case 4: {
                 vector3D n4(-rand(), -rand(), rand());
                 n4 /= n4.length();
                 vec = v * n4;
                 break;
             }
-            case 5:
-            {
+            case 5: {
                 vector3D n5(-rand(), rand(), -rand());
                 n5 /= n5.length();
                 vec = v * n5;
                 break;
             }
-            case 6:
-            {
+            case 6: {
                 vector3D n6(rand(), -rand(), -rand());
                 n6 /= n6.length();
                 vec = v * n6;
                 break;
             }
-            case 7:
-            {
+            case 7: {
                 vector3D n7(-rand(), -rand(), -rand());
                 n7 /= n7.length();
                 vec = v * n7;
                 break;
             }
         }
-        vec = vec * pow(molarMass / (Na * e), 0.5);
+        std::cout << vec << "   Length: " << vec.length() << std::endl;
         particles.at(size).setSpeed(vec);
         size++;
     }
-    this->T = T * k / e;
 }
 
 // Potential energy of the interaction of two molecules:

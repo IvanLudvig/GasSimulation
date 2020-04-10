@@ -4,6 +4,7 @@
 #include "Octree.h"
 #include "Particle.h"
 #include <cmath>
+#include <list>
 #include <random>
 
 class Gas
@@ -53,6 +54,9 @@ class Gas
     double antiderivativeFunction(double x);
 
     double binResearch(std::vector<double> &a, double val);
+
+    // For first method of calculate preassure:
+    void Calculate_pressure_by_first_method(double Pressure);
 };
 
 #endif // GASSIMULATION_GAS_H
