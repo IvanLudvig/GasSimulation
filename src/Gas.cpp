@@ -111,9 +111,11 @@ double Gas::distributionDensity(double x)
 
 double Gas::antiderivativeFunction(double x)
 {
-    double Out = sqrt(2 / 3.14) * pow(molarMass / (8.31 * T), 1.5);
-    double InLeft = sqrt(3.14 / 2) * pow((8.31 * T) / molarMass, 1.5) * erf(x * sqrt(molarMass / (8.31 * T * 2)));
-    double InRight = (8.31 * T * x * exp(-(x * x * molarMass / (8.31 * T * 2)))) / molarMass;
+    x = x * pow(e * Na / molarMass, 0.5);
+    double T0 = this->T * e / k;
+    double Out = sqrt(2 / 3.14) * pow(molarMass / (8.31 * T0), 1.5);
+    double InLeft = sqrt(3.14 / 2) * pow((8.31 * T0) / molarMass, 1.5) * erf(x * sqrt(molarMass / (8.31 * T0 * 2)));
+    double InRight = (8.31 * T0 * x * exp(-(x * x * molarMass / (8.31 * T0 * 2)))) / molarMass;
     return Out * (InLeft - InRight);
 }
 
@@ -150,30 +152,36 @@ double Gas::binResearch(std::vector<double> &a, double val)
 
 void Gas::setMaxwellDistribution(double T)
 {
-    T = T * e / k;
-
+    this->T = T;
     int size = 0;
-
     std::vector<double> speed(1001);
-    for (int i = 0; i < 1001; i++)
-        speed[i] = antiderivativeFunction(i);
+    for (double i = 0; i < 1001 * pow(molarMass/(Na * e), 0.5); i += pow(molarMass/(Na * e), 0.5))
+    {
+        speed[i/pow(molarMass/(Na * e), 0.5)] = antiderivativeFunction(i);
+        //std::cout << speed[i/pow(molarMass/(Na * e), 0.5)] << std::endl;
+    }
     while (size < N)
     {
         double v;
         double derivative = (double)(rand()) / RAND_MAX;
-
         double number = binResearch(speed, derivative);
         if (number < 0)
         {
             number = -number;
             if (derivative > speed[number])
-                v = number + (derivative - speed[number]) / (speed[number + 1] - speed[number]);
+            {
+                v = number + (derivative - speed[number]) / (speed[(number + 1)] - speed[number]);
+
+            }
             else
-                v = number - 1 + (derivative - speed[number - 1]) / (speed[number] - speed[number - 1]);
+                v = number - 1 + (derivative - speed[(number - 1)]) / (speed[number] - speed[(number - 1)]);
         }
         else
+        {
             v = number;
-
+        }
+        v *= pow(molarMass/(Na * e), 0.5);
+        //std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
         vector3D vec;
         switch (rand() % 8)
         {
@@ -226,12 +234,10 @@ void Gas::setMaxwellDistribution(double T)
             break;
         }
         }
-        vec = vec * pow(molarMass / (Na * e), 0.5);
+        std::cout << vec << "   Length: " << vec.length() << std::endl;
         particles.at(size).setSpeed(vec);
         size++;
     }
-    T = T * k / e;
-    this->T = T;
 }
 
 // Potential energy of the interaction of two molecules:
