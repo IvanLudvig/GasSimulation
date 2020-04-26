@@ -2,7 +2,7 @@
 #include "vector3D.h"
 
 Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b,
-         unsigned int number_of_last_iterations_to_calculate_pressure)
+         unsigned int number_of_last_iterations_to_calculate_pressure, int temp)
     : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()},
       number_of_last_iterations_to_calculate_pressure{number_of_last_iterations_to_calculate_pressure}
 {
@@ -25,7 +25,7 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
     {
         particles.emplace_back(Particle(1, 1, grid[i]));
     }
-    setMaxwellDistribution(2);
+    setMaxwellDistribution(temp);
     this->tree = Octree(vector3D(0, 0, 0), tank);
     for (int i = 0; i < N; i++)
     {
@@ -83,7 +83,8 @@ void Gas::update()
 
     // For First method:
     P /= delta;
-    Calculate_pressure_by_first_method(P);
+    P /= 6;
+    //Calculate_pressure_by_first_method(P);
 
     // For Second method:
     // P = ((P / 3) + (N * T)) / V;
@@ -233,7 +234,7 @@ void Gas::setMaxwellDistribution(double T)
             break;
         }
         }
-        std::cout << vec << "   Length: " << vec.length() << std::endl;
+        //std::cout << vec << "   Length: " << vec.length() << std::endl;
         particles.at(size).setSpeed(vec);
         size++;
     }

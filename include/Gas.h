@@ -29,7 +29,7 @@ class Gas
     const double Na = 6.02214e23; // Avogadro constant
     double time = 0;
     Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b,
-        unsigned int number_of_last_iterations_to_calculate_preassure);
+        unsigned int number_of_last_iterations_to_calculate_preassure, int temp=10);
 
     // Particle parameters update, collision with walls and gas parameters update
     void update();
