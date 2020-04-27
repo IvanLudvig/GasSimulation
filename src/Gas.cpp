@@ -84,7 +84,7 @@ void Gas::update()
     // For First method:
     P /= delta;
     P /= 6;
-    //Calculate_pressure_by_first_method(P);
+    // Calculate_pressure_by_first_method(P);
 
     // For Second method:
     // P = ((P / 3) + (N * T)) / V;
@@ -237,7 +237,7 @@ void Gas::setMaxwellDistribution(double T)
                 break;
             }
         }
-        //std::cout << vec << "   Length: " << vec.length() << std::endl;
+        // std::cout << vec << "   Length: " << vec.length() << std::endl;
         particles.at(size).setSpeed(vec);
         size++;
     }
