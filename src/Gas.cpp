@@ -150,7 +150,7 @@ void Gas::setMaxwellDistribution(double T)
             v = number;
         }
         v *= pow(molarMass / (Na * e), 0.5);
-         //std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
+        // std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
         vector3D vec;
         switch (rand() % 8)
         {
@@ -203,7 +203,7 @@ void Gas::setMaxwellDistribution(double T)
             break;
         }
         }
-        //std::cout << vec << "   Length: " << vec.length() << std::endl;
+        // std::cout << vec << "   Length: " << vec.length() << std::endl;
         particles.at(size).setSpeed(vec);
         size++;
     }
