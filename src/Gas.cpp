@@ -23,7 +23,7 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
     {
         particles.emplace_back(Particle(1, 1, grid[i]));
     }
-    setMaxwellDistribution(2);
+    setMaxwellDistribution(15);
     this->tree = Octree(vector3D(0, 0, 0), tank);
     for (int i = 0; i < N; i++)
     {
@@ -124,8 +124,8 @@ void Gas::setMaxwellDistribution(double T)
 {
     this->T = T;
     int size = 0;
-    std::vector<double> speed(1001);
-    for (double i = 0; i < 1001 * pow(molarMass / (Na * e), 0.5); i += pow(molarMass / (Na * e), 0.5))
+    std::vector<double> speed(20000);
+    for (double i = 0; i < 20000 * pow(molarMass / (Na * e), 0.5); i += pow(molarMass / (Na * e), 0.5))
     {
         speed[i / pow(molarMass / (Na * e), 0.5)] = antiderivativeFunction(i);
         // std::cout << speed[i/pow(molarMass/(Na * e), 0.5)] << std::endl;
@@ -150,7 +150,7 @@ void Gas::setMaxwellDistribution(double T)
             v = number;
         }
         v *= pow(molarMass / (Na * e), 0.5);
-        // std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
+         //std::cout << v/pow(molarMass/(Na * e), 0.5) << std::endl;
         vector3D vec;
         switch (rand() % 8)
         {
@@ -203,7 +203,7 @@ void Gas::setMaxwellDistribution(double T)
             break;
         }
         }
-        std::cout << vec << "   Length: " << vec.length() << std::endl;
+        //std::cout << vec << "   Length: " << vec.length() << std::endl;
         particles.at(size).setSpeed(vec);
         size++;
     }
