@@ -4,6 +4,9 @@
 #include "Particle.h"
 #include <climits>
 #include <vector>
+#include <omp.h>
+#include <stdio.h>
+
 
 class Octree
 {

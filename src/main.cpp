@@ -1,17 +1,27 @@
 #include <Gas.h>
 #include <iostream>
+#include <chrono>
 
 int main()
 {
-    int T[10] = {1, 2, 5, 10, 15, 20, 50};
-    for (int t = 0; t < 2; t++)
+    int T[10] = {3, 10, 15, 20, 50};
+    for (int t = 0; t < 1; t++)
     {
-        Gas gas(1000, 0.0399, vector3D(100, 100, 100), 119.8 * k, 1, 20, T[t]);
+    	float time = 0;
+        Gas gas(10000, 0.0399, vector3D(100, 100, 100), 119.8 * k, 1, T[t]);
         std::cout << std::endl << "TEMPERATURE " << T[t] << std::endl;
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < 1000; i++)
         {
-            gas.update();
+			auto t1 = std::chrono::high_resolution_clock::now();
+			gas.update();
+			auto t2 = std::chrono::high_resolution_clock::now();
+			auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+			std::cout << duration/1e6 <<std::endl;
+			time+=duration/1e6;
         }
+
+        std::cout << "COMPUTATION TIME: " << time << std::endl;
+        std::cout << "SIMULATION TIME: " << gas.time << std::endl;
     }
     return 0;
 }
