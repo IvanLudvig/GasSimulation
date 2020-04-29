@@ -3,10 +3,9 @@
 
 #include "Particle.h"
 #include <climits>
-#include <vector>
 #include <omp.h>
 #include <stdio.h>
-
+#include <vector>
 
 class Octree
 {
