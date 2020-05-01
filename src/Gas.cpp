@@ -44,7 +44,7 @@ void Gas::update()
 {
     tree.~Octree();
     tree = Octree(vector3D(0, 0, 0), tank);
-//#pragma omp parallel for shared(tree)
+    //#pragma omp parallel for shared(tree)
     for (auto &p : particles)
     {
         tree.add(p);
