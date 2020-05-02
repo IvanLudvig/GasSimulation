@@ -10,7 +10,7 @@ int main()
         float time = 0;
         Gas gas(10000, 0.0399, vector3D(100, 100, 100), 119.8 * k, 1, T[t]);
         std::cout << std::endl << "TEMPERATURE " << T[t] << std::endl;
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 100; i++)
         {
             auto t1 = std::chrono::high_resolution_clock::now();
             gas.update();
