@@ -145,5 +145,5 @@ bool Octree::isNear(const Particle &p) const
 
 double Octree::getDelta() const
 {
-    return (delta >= eps) && (delta <= INT_MAX) ? delta / 20 : 0.01;
+    return ((delta >= eps) && (delta <= INT_MAX)) ? delta / 40 : 0.005;
 }

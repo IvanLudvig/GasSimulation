@@ -1,3 +1,6 @@
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 file(GLOB SOURCE_FILES "*.cpp")
+find_package(OpenMP REQUIRED)
 add_executable(GasSimulation ${SOURCE_FILES})
+target_compile_options(GasSimulation PRIVATE -fast -Wall -march=sandybridge -qopenmp ${OpenMP_CXX_FLAGS})
+target_link_libraries(GasSimulation PRIVATE OpenMP::OpenMP_CXX)

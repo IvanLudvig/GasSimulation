@@ -3,6 +3,8 @@
 
 #include "Particle.h"
 #include <climits>
+#include <omp.h>
+#include <stdio.h>
 #include <vector>
 
 class Octree
@@ -38,7 +40,7 @@ class Octree
     double delta;
 
   public:
-    Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth = 1000);
+    Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth = 10000);
 
     Octree();
 
