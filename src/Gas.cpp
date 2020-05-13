@@ -2,7 +2,8 @@
 
 Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b,
          double temp)
-        : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()} {
+    : N{N}, molarMass{molarMass}, tank{tank}, e{e}, b{b}, V{tank.getX() * tank.getY() * tank.getZ()}
+{
     // Grid for testing
     vector3D grid[N * 3];
     int n = pow(N, 1.0 / 3) + 1;
@@ -58,7 +59,7 @@ void Gas::update()
     }
 
     // Update particles and compute energy
-    delta = tree.getDelta()/std::max(1.0, (pow(V, 1.0/3)/100));
+    delta = tree.getDelta() / std::max(1.0, (pow(V, 1.0 / 3) / 100));
     time += delta;
     U = 0;
     E = 0;
@@ -75,7 +76,7 @@ void Gas::update()
     T = getTemperature();
     P /= delta;
     P /= 6;
-    std::cout << P << " "<< T << std::endl;
+    std::cout << P << " " << T << std::endl;
 }
 
 double Gas::distributionDensity(double x)
