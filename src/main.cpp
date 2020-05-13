@@ -4,11 +4,11 @@
 
 int main()
 {
-    int V[10] = {30};
+    int V[10] = {30, 31, 32, 33, 34, 35, 36};
     for (int t = 0; t < 1; t++)
     {
         float time = 0;
-        Gas gas(1000, 0.0399, vector3D(V[t], V[t], V[t]), 119.8 * k, 1, 0.58);
+        Gas gas(1000, 0.0399, vector3D(V[t], V[t], V[t]), 119.8 * k, 1, 1.25);
         std::cout << std::endl << "VOLUME " << V[t] << std::endl;
         for (int i = 0; i < 2000; i++)
         {

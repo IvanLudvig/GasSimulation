@@ -35,7 +35,6 @@ Gas::Gas(const unsigned long int N, const double molarMass, const vector3D &tank
     {
         tree.update(p);
     }
-
     delta = tree.getDelta();
 }
 
