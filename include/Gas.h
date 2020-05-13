@@ -26,7 +26,7 @@ class Gas
     const double Na = 6.02214e23; // Avogadro constant
     double time = 0;
     Gas(const unsigned long int N, const double molarMass, const vector3D &tank, const double e, const double b,
-        int temp = 10);
+        double temp = 1);
 
     // Particle parameters update, collision with walls and gas parameters update
     void update();

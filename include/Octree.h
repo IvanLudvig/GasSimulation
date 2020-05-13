@@ -40,7 +40,7 @@ class Octree
     double delta;
 
   public:
-    Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth = 1000);
+    Octree(vector3D farBottomLeft, vector3D nearTopRight, int maxDepth = 10000);
 
     Octree();
 
