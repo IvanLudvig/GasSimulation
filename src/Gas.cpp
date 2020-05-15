@@ -59,7 +59,7 @@ void Gas::update()
     }
 
     // Update particles and compute energy
-    delta = tree.getDelta() / std::max(1.0, (pow(V, 1.0 / 3) / 100));
+    delta = tree.getDelta();
     time += delta;
     U = 0;
     E = 0;
