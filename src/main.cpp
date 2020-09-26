@@ -2,15 +2,17 @@
 #include <chrono>
 #include <iostream>
 
+int VOLUMES[10] = {30, 31, 32, 33, 34, 35, 36};
+int ITERATIONS = 2000;
+
 int main()
 {
-    int V[10] = {30, 31, 32, 33, 34, 35, 36};
-    for (int t = 0; t < 1; t++)
+    for (int v = 0; v < 1; v++)
     {
         float time = 0;
-        Gas gas(1000, 0.0399, vector3D(V[t], V[t], V[t]), 119.8 * k, 1, 1.25);
-        std::cout << std::endl << "VOLUME " << V[t] << std::endl;
-        for (int i = 0; i < 2000; i++)
+        Gas gas(1000, 0.0399, vector3D(VOLUMES[v], VOLUMES[v], VOLUMES[v]), 119.8 * k, 1, 1.25);
+        std::cout << std::endl << "VOLUME " << VOLUMES[v] << std::endl;
+        for (int i = 0; i < ITERATIONS; i++)
         {
             auto t1 = std::chrono::high_resolution_clock::now();
             gas.update();
